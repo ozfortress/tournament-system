@@ -16,7 +16,7 @@ describe Tournament::SingleElimination do
   end
 
   describe '#generate' do
-    context 'initial round' do
+    context 'first round' do
       it 'works for 4 teams' do
         driver = TestDriver.new(teams: [1, 2, 3, 4])
         described_class.generate driver, round: 0
