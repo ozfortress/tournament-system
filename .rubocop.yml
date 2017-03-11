@@ -1,0 +1,18 @@
+AllCops:
+  TargetRubyVersion: 2.3
+
+# This is fine, really
+Style/FileName:
+  Enabled: false
+
+# 'old' style
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+# It makes much more sense to group them according to purpose
+Bundler/OrderedGems:
+  Enabled: false
+
+# Not interchangeable
+Style/ModuleFunction:
+  Enabled: false
