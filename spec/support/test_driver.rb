@@ -13,12 +13,16 @@ class TestDriver < Tournament::Driver
   attr_accessor :teams
   attr_accessor :created_matches
 
+  def seeded_teams
+    @teams
+  end
+
   def matches_for_round(round)
     @matches[round]
   end
 
   def matches
-    @matches.values.reduce(:concat) || []
+    @matches.values.reduce(:+) || []
   end
 
   def get_match_winner(match)

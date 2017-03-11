@@ -8,7 +8,7 @@ module Tournament
       round = options[:round] || raise('Missing option :round')
 
       teams = if driver.matches.empty?
-                seed_teams driver.teams, options
+                seed_teams driver.seeded_teams, options
               else
                 last_matches = driver.matches_for_round(round - 1)
                 get_match_winners driver, last_matches
@@ -18,7 +18,7 @@ module Tournament
     end
 
     def total_rounds(driver)
-      total_rounds_for_teams(driver.teams)
+      total_rounds_for_teams(driver.seeded_teams)
     end
 
     private

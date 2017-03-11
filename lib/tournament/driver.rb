@@ -6,7 +6,11 @@ module Tournament
       raise 'Not Implemented'
     end
 
-    def teams
+    def seeded_teams
+      raise 'Not Implemented'
+    end
+
+    def ranked_teams
       raise 'Not Implemented'
     end
 
