@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Tournament
   class Driver
     def matches_for_round(round)
