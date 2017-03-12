@@ -16,6 +16,11 @@ module Tournament
       raise 'Not Implemented'
     end
 
+    def get_match_loser(match)
+      winner = get_match_winner(match)
+      losers = get_match_teams(match).reject { |team| team == winner}.first
+    end
+
     def get_match_teams(match)
       raise 'Not Implemented'
     end
