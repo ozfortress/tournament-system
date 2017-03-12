@@ -17,5 +17,15 @@ Bundler/OrderedGems:
 Style/ModuleFunction:
   Enabled: false
 
+# Doesn't really matter
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+# Doesn't really make sense for multiline
+Style/TrailingCommaInLiteral:
+  Enabled: false
+
+# Tests should be as long as they need to be
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'

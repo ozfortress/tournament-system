@@ -3,8 +3,6 @@ module Tournament
     module Common
       extend self
 
-      private
-
       # Iterate over each group, letting a team rollover into the next group
       # if a group has an odd number of teams
       def each_group_with_rollover(groups, group_keys)
@@ -28,32 +26,38 @@ module Tournament
 
       # Merges small groups to the right (if possible) such that all groups
       # are larger than min_size.
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
       def merge_small_groups(groups, group_keys, min_size)
         new_keys = []
 
         group_keys.each_with_index do |key, index|
           group = groups[key]
 
+          # Merge small groups into an adjacent group
           if group.length < min_size
             groups.delete(key)
 
+            # When there is an adjacent lesser group, merge into that one
             new_key = group_keys[index + 1]
             if new_key
               groups[new_key] = group + groups[new_key]
+            # If there isn't, merge into the adjacent greater group
             else
               new_key = group_keys[index - 1] unless new_key
               groups[new_key] += group
             end
+          # Leave larger groups the way they are
           else
             new_keys << key
             groups[key] = group
           end
         end
 
-        [groups, new_keys]
+        new_keys
       end
+      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
-      # Get a fast set of already played matches
+      # Get a set of already played matches. Matches are also sets
       def matches_set(driver)
         existing_matches = Set.new
         driver.matches.each do |match|
@@ -65,26 +69,38 @@ module Tournament
 
       # Check whether any match has already been played
       def any_match_exists?(matches, existing_matches)
-        matches.any? { |match| existing_matches.include?(Set.new match) }
+        matches.any? { |match| existing_matches.include?(Set.new(match)) }
+      end
+
+      # Count the number of matches already played
+      def count_existing_matches(matches, existing_matches)
+        matches.count { |match| existing_matches.include?(Set.new(match)) }
       end
 
       # Finds the first permutation of teams that has a unique pairing.
       # If none are found, the pairing that has the least duplicate matches
       # is returned.
+      # rubocop:disable Metrics/MethodLength
       def first_permutation_pairing(teams, existing_matches)
         min_dups = Float::INFINITY
         best_matches = nil
 
+        # Find the first permutation that has no duplicate matches
+        # Or the permutation with the least duplicate matches
         teams.permutation.each do |variation|
           matches = (yield variation).to_a
-          dup_count = matches.count { |match| existing_matches.include?(Set.new match) }
+          dup_count = count_existing_matches(matches, existing_matches)
 
-          if dup_count == 0
-            return matches
-          elsif dup_count < min_dups
+          # Quick exit when there are no duplicates
+          return matches if dup_count.zero?
+
+          # Update best stats as we go along
+          if dup_count < min_dups
+            min_dups = dup_count
             best_matches = matches
           end
         end
+        # rubocop:enable Metrics/MethodLength
 
         best_matches
       end

@@ -2,16 +2,16 @@ describe Tournament::Swiss do
   describe '#minimum_rounds' do
     it 'works for valid input' do
       driver = TestDriver.new(teams: [1, 2, 3])
-      expect(described_class.minimum_rounds driver).to eq(2)
+      expect(described_class.minimum_rounds(driver)).to eq(2)
 
       driver = TestDriver.new(teams: [1, 2])
-      expect(described_class.minimum_rounds driver).to eq(1)
+      expect(described_class.minimum_rounds(driver)).to eq(1)
 
       driver = TestDriver.new(teams: [1])
-      expect(described_class.minimum_rounds driver).to eq(0)
+      expect(described_class.minimum_rounds(driver)).to eq(0)
 
       driver = TestDriver.new(teams: (1..9).to_a)
-      expect(described_class.minimum_rounds driver).to eq(4)
+      expect(described_class.minimum_rounds(driver)).to eq(4)
     end
   end
 
@@ -84,7 +84,8 @@ describe Tournament::Swiss do
 
           (1..3).each do |round|
             # Sort teams
-            driver.teams = driver.teams.sort_by.with_index { |t, i| [-driver.scores[t], i] }
+            driver.teams = driver.teams.sort_by
+                                 .with_index { |t, i| [-driver.scores[t], i] }
             described_class.generate driver, pair_options: { min_pair_size: 2 }
 
             driver.test_matches[round] = driver.created_matches.map do |match|
@@ -129,7 +130,8 @@ describe Tournament::Swiss do
 
           (1..3).each do |round|
             # Sort teams
-            driver.teams = driver.teams.sort_by.with_index { |t, i| [-driver.scores[t], i] }
+            driver.teams = driver.teams.sort_by
+                                 .with_index { |t, i| [-driver.scores[t], i] }
             described_class.generate driver, pair_options: { min_pair_size: 2 }
 
             driver.test_matches[round] = driver.created_matches.map do |match|

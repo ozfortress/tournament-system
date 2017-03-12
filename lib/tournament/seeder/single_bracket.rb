@@ -4,13 +4,9 @@ module Tournament
       extend self
 
       def seed(teams)
-        top_half = []
-        bottom_half = []
-
-        teams.each_slice(2) do |slice|
-          top_half << slice[0]
-          bottom_half << slice[1]
-        end
+        groups = teams.each_slice(2)
+        top_half    = groups.map { |pair| pair[0] }
+        bottom_half = groups.map { |pair| pair[1] }
 
         if top_half.length > 2
           top_half = seed top_half

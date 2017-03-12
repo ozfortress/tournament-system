@@ -8,25 +8,28 @@ describe Tournament::PagePlayoff do
   describe '#guess_round' do
     it 'works for valid input' do
       driver = TestDriver.new
-      expect(described_class.guess_round driver).to eq(0)
+      expect(described_class.guess_round(driver)).to eq(0)
 
       driver.test_matches[0] = [[1, 2], [3, 4]]
-      expect(described_class.guess_round driver).to eq(1)
+      expect(described_class.guess_round(driver)).to eq(1)
 
       driver.test_matches[0] = [[1, 2], [3, 4], [2, 3]]
-      expect(described_class.guess_round driver).to eq(2)
+      expect(described_class.guess_round(driver)).to eq(2)
     end
 
     it 'handles invalid input' do
       driver = TestDriver.new
       driver.test_matches[0] = [[1, 2]]
-      expect { described_class.guess_round driver }.to raise_exception Exception
+      expect { described_class.guess_round(driver) }
+        .to raise_exception Exception
 
       driver.test_matches[0] = [[1, 2], [3, 4], [2, 3], [1, 2]]
-      expect { described_class.guess_round driver }.to raise_exception Exception
+      expect { described_class.guess_round(driver) }
+        .to raise_exception Exception
 
       driver.test_matches[0] = [[1, 2], [3, 4], [2, 3], [1, 2], [3, 4]]
-      expect { described_class.guess_round driver }.to raise_exception Exception
+      expect { described_class.guess_round(driver) }
+        .to raise_exception Exception
     end
   end
 
@@ -52,7 +55,8 @@ describe Tournament::PagePlayoff do
 
       it 'works' do
         winners = { [1, 2] => 2, [3, 4] => 4 }
-        driver = TestDriver.new(teams: teams, winners: winners, matches: matches)
+        driver = TestDriver.new(teams: teams, winners: winners,
+                                matches: matches)
         described_class.generate driver
 
         expect(driver.created_matches.length).to eq(1)
@@ -63,11 +67,12 @@ describe Tournament::PagePlayoff do
     end
 
     context 'grand-finals' do
-      let(:matches) { { 0 => [[1, 2], [3, 4]], 1 => [[1, 4]] }}
+      let(:matches) { { 0 => [[1, 2], [3, 4]], 1 => [[1, 4]] } }
 
       it 'generates grand final match' do
         winners = { [1, 2] => 2, [3, 4] => 4, [1, 4] => 1 }
-        driver = TestDriver.new(teams: teams, winners: winners, matches: matches)
+        driver = TestDriver.new(teams: teams, winners: winners,
+                                matches: matches)
         described_class.generate driver
 
         expect(driver.created_matches.length).to eq(1)
@@ -78,7 +83,8 @@ describe Tournament::PagePlayoff do
 
       it 'generates bronze match' do
         winners = { [1, 2] => 2, [3, 4] => 4, [1, 4] => 4 }
-        driver = TestDriver.new(teams: teams, winners: winners, matches: matches)
+        driver = TestDriver.new(teams: teams, winners: winners,
+                                matches: matches)
         described_class.generate driver, bronze_match: true
 
         expect(driver.created_matches.length).to eq(2)

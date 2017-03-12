@@ -48,7 +48,7 @@ module Tournament
         away_team = teams[-index - 1]
 
         # Alternate home/away
-        # home_team, away_team = away_team, home_team if round.odd?
+        home_team, away_team = away_team, home_team if round.odd?
 
         driver.create_match(home_team, away_team)
       end

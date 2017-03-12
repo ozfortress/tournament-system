@@ -2,35 +2,35 @@ describe Tournament::RoundRobin do
   describe '#total_rounds' do
     it 'works for valid input' do
       driver = TestDriver.new(teams: [1, 2, 3])
-      expect(described_class.total_rounds driver).to eq(3)
+      expect(described_class.total_rounds(driver)).to eq(3)
 
       driver = TestDriver.new(teams: [1, 2])
-      expect(described_class.total_rounds driver).to eq(1)
+      expect(described_class.total_rounds(driver)).to eq(1)
 
       driver = TestDriver.new(teams: [1, 2, 3, 4, 5, 6])
-      expect(described_class.total_rounds driver).to eq(5)
+      expect(described_class.total_rounds(driver)).to eq(5)
 
       driver = TestDriver.new(teams: (1..9).to_a)
-      expect(described_class.total_rounds driver).to eq(9)
+      expect(described_class.total_rounds(driver)).to eq(9)
     end
   end
 
   describe '#guess_round' do
     it 'works for valid input' do
       driver = TestDriver.new(teams: [1, 2, 3, 4], matches: {})
-      expect(described_class.guess_round driver).to eq(0)
+      expect(described_class.guess_round(driver)).to eq(0)
 
       driver.test_matches[1] = [1, 2]
-      expect(described_class.guess_round driver).to eq(1)
+      expect(described_class.guess_round(driver)).to eq(1)
 
       driver.test_matches[1] = [1, 2, 3, 4]
-      expect(described_class.guess_round driver).to eq(2)
+      expect(described_class.guess_round(driver)).to eq(2)
 
       driver.test_matches[1] = [1, 2, 3, 4, 5, 6]
-      expect(described_class.guess_round driver).to eq(3)
+      expect(described_class.guess_round(driver)).to eq(3)
 
       driver.test_matches[1] = [1, 2, 3, 4, 5, 6, 7, 8]
-      expect(described_class.guess_round driver).to eq(4)
+      expect(described_class.guess_round(driver)).to eq(4)
     end
   end
 

@@ -2,16 +2,16 @@ describe Tournament::SingleElimination do
   describe '#total_rounds' do
     it 'works for valid input' do
       driver = TestDriver.new(teams: [1, 2, 3])
-      expect(described_class.total_rounds driver).to eq(2)
+      expect(described_class.total_rounds(driver)).to eq(2)
 
       driver = TestDriver.new(teams: [1, 2])
-      expect(described_class.total_rounds driver).to eq(1)
+      expect(described_class.total_rounds(driver)).to eq(1)
 
       driver = TestDriver.new(teams: [1])
-      expect(described_class.total_rounds driver).to eq(0)
+      expect(described_class.total_rounds(driver)).to eq(0)
 
       driver = TestDriver.new(teams: (1..9).to_a)
-      expect(described_class.total_rounds driver).to eq(4)
+      expect(described_class.total_rounds(driver)).to eq(4)
     end
   end
 

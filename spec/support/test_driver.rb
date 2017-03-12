@@ -3,7 +3,7 @@ require 'ostruct'
 require 'tournament-system'
 
 class TestDriver < Tournament::Driver
-  def initialize(options = {}, &block)
+  def initialize(options = {})
     @teams = options[:teams] || []
     @ranked_teams = options[:ranked_teams] || @teams
     @matches = options[:matches] || {}
@@ -46,7 +46,8 @@ class TestDriver < Tournament::Driver
   end
 
   def build_match(home_team, away_team)
-    @created_matches << OpenStruct.new(home_team: home_team, away_team: away_team)
+    @created_matches << OpenStruct.new(home_team: home_team,
+                                       away_team: away_team)
   end
 
   def test_matches

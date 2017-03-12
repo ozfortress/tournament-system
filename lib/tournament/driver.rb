@@ -1,5 +1,6 @@
 module Tournament
   class Driver
+    # rubocop:disable Lint/UnusedMethodArgument
     def matches_for_round(round)
       raise 'Not Implemented'
     end
@@ -16,11 +17,6 @@ module Tournament
       raise 'Not Implemented'
     end
 
-    def get_match_loser(match)
-      winner = get_match_winner(match)
-      losers = get_match_teams(match).reject { |team| team == winner}.first
-    end
-
     def get_match_teams(match)
       raise 'Not Implemented'
     end
@@ -31,6 +27,13 @@ module Tournament
 
     def build_match(home_team, away_team)
       raise 'Not Implemented'
+    end
+
+    # rubocop:enable Lint/UnusedMethodArgument
+
+    def get_match_loser(match)
+      winner = get_match_winner(match)
+      get_match_teams(match).reject { |team| team == winner }.first
     end
 
     def create_match(home_team, away_team)
