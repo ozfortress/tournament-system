@@ -16,6 +16,14 @@ module Tournament
       raise 'Not Implemented'
     end
 
+    def get_match_teams(match)
+      raise 'Not Implemented'
+    end
+
+    def get_team_score(team)
+      raise 'Not Implemented'
+    end
+
     def build_match(home_team, away_team)
       raise 'Not Implemented'
     end
