@@ -2,6 +2,7 @@ require 'tournament/swiss/common'
 require 'tournament/swiss/dutch'
 
 module Tournament
+  # Implements the swiss tournament system
   module Swiss
     extend self
 

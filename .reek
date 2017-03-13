@@ -1,0 +1,13 @@
+# These don't work when using modules as stateless namespaces
+UtilityFunction:
+    enabled: false
+FeatureEnvy:
+  enabled: false
+
+# Doesn't work well with case statements
+TooManyStatements:
+  max_statements: 10
+
+# Reek isn't good at detecting these, especially with state and blocks
+DuplicateMethodCall:
+  max_calls: 2

@@ -1,4 +1,6 @@
 module Tournament
+  # Implements the round-robin tournament system.
+  # Requires a consistent seeder, defaulting to Seeder::None
   module RoundRobin
     extend self
 

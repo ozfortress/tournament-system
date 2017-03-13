@@ -1,4 +1,5 @@
 module Tournament
+  # Implements the single bracket elimination tournament system.
   module SingleElimination
     extend self
 

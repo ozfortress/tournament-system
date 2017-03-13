@@ -1,5 +1,6 @@
 module Tournament
   module Swiss
+    # Common functions for swiss pairing systems..\
     module Common
       extend self
 
@@ -26,7 +27,7 @@ module Tournament
 
       # Merges small groups to the right (if possible) such that all groups
       # are larger than min_size.
-      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+      # rubocop:disable Metrics/MethodLength :reek:TooManyStatements
       def merge_small_groups(groups, group_keys, min_size)
         new_keys = []
 
@@ -43,7 +44,7 @@ module Tournament
               groups[new_key] = group + groups[new_key]
             # If there isn't, merge into the adjacent greater group
             else
-              new_key = group_keys[index - 1] unless new_key
+              new_key = group_keys[index - 1]
               groups[new_key] += group
             end
           # Leave larger groups the way they are

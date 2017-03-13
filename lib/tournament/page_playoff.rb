@@ -1,4 +1,5 @@
 module Tournament
+  # Implements the page playoff system.
   module PagePlayoff
     extend self
 

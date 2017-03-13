@@ -1,4 +1,9 @@
 module Tournament
+  # An interface for external tournament data.
+  #
+  # To use any tournament system implemented in this gem, simply subclass this
+  # class and implement the interface functions.
+  # :reek:UnusedParameters
   class Driver
     # rubocop:disable Lint/UnusedMethodArgument
     def matches_for_round(round)
@@ -25,10 +30,10 @@ module Tournament
       raise 'Not Implemented'
     end
 
+    # Handle for matches that are created by tournament systems
     def build_match(home_team, away_team)
       raise 'Not Implemented'
     end
-
     # rubocop:enable Lint/UnusedMethodArgument
 
     def get_match_loser(match)

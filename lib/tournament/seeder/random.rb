@@ -1,5 +1,6 @@
 module Tournament
   module Seeder
+    # A random seeder.
     class Random
       def initialize(random = nil)
         @random = random

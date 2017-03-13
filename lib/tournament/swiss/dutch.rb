@@ -1,5 +1,6 @@
 module Tournament
   module Swiss
+    # A simplified Dutch pairing system implementation.
     module Dutch
       extend self
       extend Common
