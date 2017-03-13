@@ -6,26 +6,33 @@ module Tournament
   # :reek:UnusedParameters
   class Driver
     # rubocop:disable Lint/UnusedMethodArgument
+
+    # Get the matches played for a particular round
     def matches_for_round(round)
       raise 'Not Implemented'
     end
 
+    # Get the teams playing with their initial seedings
     def seeded_teams
       raise 'Not Implemented'
     end
 
+    # Get the teams playing, ranked by their current position in the tournament
     def ranked_teams
       raise 'Not Implemented'
     end
 
+    # Get the winning team of a match
     def get_match_winner(match)
       raise 'Not Implemented'
     end
 
+    # Get both teams playing for a match
     def get_match_teams(match)
       raise 'Not Implemented'
     end
 
+    # Get a specific score for a team
     def get_team_score(team)
       raise 'Not Implemented'
     end
@@ -34,8 +41,10 @@ module Tournament
     def build_match(home_team, away_team)
       raise 'Not Implemented'
     end
+
     # rubocop:enable Lint/UnusedMethodArgument
 
+    # Get the losing team of a specific match
     def get_match_loser(match)
       winner = get_match_winner(match)
       get_match_teams(match).reject { |team| team == winner }.first
