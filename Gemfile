@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 gemspec
 
+# For build scripts
+gem 'rake'
+
 # Use rspec for tests
 gem 'rspec'
 
