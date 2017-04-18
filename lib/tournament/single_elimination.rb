@@ -23,11 +23,20 @@ module Tournament
     private
 
     def seed_teams(teams, options)
-      padding = 2**total_rounds_for_teams(teams) - teams.length
-      teams = [nil] * padding + teams
+      teams = padd_teams teams
 
       seeder = options[:seeder] || Seeder::SingleBracket
       seeder.seed teams
+    end
+
+    def padd_teams(teams)
+      # Insert the padding after the top half of the total number of teams
+      total = 2**total_rounds_for_teams(teams)
+      half = total / 2
+
+      padding = total - teams.length
+
+      teams[0...half] + [nil] * padding + teams[half...teams.length]
     end
 
     def total_rounds_for_teams(teams)
