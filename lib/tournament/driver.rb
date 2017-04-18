@@ -7,6 +7,11 @@ module Tournament
   class Driver
     # rubocop:disable Lint/UnusedMethodArgument
 
+    # Get all matches
+    def matches
+      raise 'Not Implemented'
+    end
+
     # Get the matches played for a particular round
     def matches_for_round(round)
       raise 'Not Implemented'

@@ -35,6 +35,10 @@ and the tournament systems:
 
 ```ruby
 class Driver < Tournament::Driver
+  def matches
+    ...
+  end
+
   def matches_for_round(round)
     ...
   end
