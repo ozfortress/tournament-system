@@ -67,36 +67,26 @@ describe Tournament::Swiss do
       end
 
       context 'full tournament' do
-        it 'works for 8 teams' do
-          teams = [1, 2, 3, 4, 5, 6, 7, 8]
-          winners = {
-            [1, 5] => 1,
-            [2, 6] => 2,
-            [3, 7] => 3,
-            [4, 8] => 4,
-            [1, 3] => 1,
-            [2, 4] => 4,
-            [1, 4] => 1,
-            [5, 7] => 7,
-            [6, 8] => 6,
-          }
-          driver = TestDriver.new(teams: teams, winners: winners)
+        it 'works for 16 teams' do
+          teams = (1..16).to_a
+          driver = TestDriver.new(teams: teams)
 
-          3.times do
+          6.times do
             # Sort teams
             driver.teams = driver.teams.sort_by
                                  .with_index { |t, i| [-driver.scores[t], i] }
-            described_class.generate driver, pair_options: { min_pair_size: 2 }
+            described_class.generate driver, pair_options: { min_pair_size: 4 }
 
             driver.matches += driver.created_matches.map do |match|
               match = [match.home_team, match.away_team]
-              driver.scores[driver.get_match_winner(match)] += 1
+              expect(match[1]).to_not be nil
+              driver.scores[match.min] += 1
               match
             end
             driver.created_matches = []
           end
 
-          expect(driver.matches.length).to eq(12)
+          expect(driver.matches.length).to eq(48)
           teams.each do |team1|
             teams.each do |team2|
               next if team1 == team2
@@ -109,44 +99,33 @@ describe Tournament::Swiss do
             matches_played = driver.matches.count do |match|
               match.include?(team1)
             end
-            expect(matches_played).to eq(3)
+            expect(matches_played).to eq(6)
           end
         end
 
-        it 'works for 7 teams' do
-          teams = [1, 2, 3, 4, 5, 6, 7]
-          winners = {
-            [1, 5] => 1,
-            [2, 6] => 2,
-            [3, 7] => 3,
-            [4, 8] => 4,
-            [1, 3] => 1,
-            [2, 4] => 4,
-            [1, 4] => 1,
-            [5, 7] => 7,
-            [6, 8] => 6,
-          }
-          driver = TestDriver.new(teams: teams, winners: winners)
+        it 'works for 15 teams' do
+          teams = (1..15).to_a
+          driver = TestDriver.new(teams: teams)
 
-          3.times do
+          6.times do
             # Sort teams
             driver.teams = driver.teams.sort_by
                                  .with_index { |t, i| [-driver.scores[t], i] }
-            described_class.generate driver, pair_options: { min_pair_size: 2 }
+            described_class.generate driver, pair_options: { min_pair_size: 4 }
 
             driver.matches += driver.created_matches.map do |match|
               match = [match.home_team, match.away_team]
               if match[1].nil?
                 driver.scores[match[0]] += 1
               else
-                driver.scores[driver.get_match_winner(match)] += 1
+                driver.scores[match.min] += 1
               end
               match
             end
             driver.created_matches = []
           end
 
-          expect(driver.matches.length).to eq(12)
+          expect(driver.matches.length).to eq(48)
           teams.each do |team1|
             teams.each do |team2|
               next if team1 == team2
@@ -159,7 +138,7 @@ describe Tournament::Swiss do
             matches_played = driver.matches.select do |match|
               match.include?(team1)
             end
-            expect(matches_played.length).to be == 3
+            expect(matches_played.length).to be == 6
             byes = matches_played.select { |match| match[1].nil? }
             expect(byes.length).to be <= 1
           end
