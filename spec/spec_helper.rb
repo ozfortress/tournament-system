@@ -5,11 +5,11 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new [
   SimpleCov::Formatter::HTMLFormatter,
   Coveralls::SimpleCov::Formatter,
 ]
+SimpleCov.minimum_coverage 98
 SimpleCov.start
 
-require 'support/test_driver'
-
 require 'tournament-system'
+require 'support/test_driver'
 
 RSpec.configure do |config|
   # Nicer specs
