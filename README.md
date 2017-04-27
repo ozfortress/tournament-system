@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/ozfortress/tournament-system.svg?branch=master)](https://travis-ci.org/ozfortress/tournament-system)
 [![Coverage Status](https://coveralls.io/repos/github/ozfortress/tournament-system/badge.svg?branch=master)](https://coveralls.io/github/ozfortress/tournament-system?branch=master)
 [![Gem Version](https://badge.fury.io/rb/tournament-system.svg)](https://badge.fury.io/rb/tournament-system)
+[![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](http://www.rubydoc.info/github/ozfortress/tournament-system/master)
 
 This is a simple gem that implements numerous tournament systems.
 
@@ -71,14 +72,14 @@ instance:
 ```ruby
 driver = Driver.new
 
-# Generate the 3rd round of a single elimination tournament
-Tournament::SingleElimination.generate driver, round: 2
+# Generate a round of a single elimination tournament
+Tournament::SingleElimination.generate driver
 
-# Generate a round for a round robin tournament, guesses round automatically
+# Generate a round for a round robin tournament
 Tournament::RoundRobin.generate driver
 
 # Generate a round for a swiss system tournament
-# with Dutch pairings (default) with a minimum pair size of 6
+# with Dutch pairings (default) with a minimum pair size of 6 (default 4)
 Tournament::Swiss.generate driver, pairer: Tournament::Swiss::Dutch,
                                    pair_options: { min_pair_size: 6 }
 

@@ -3,6 +3,14 @@ module Tournament
   #
   # To use any tournament system implemented in this gem, simply subclass this
   # class and implement the interface functions.
+  #
+  # The interface is designed to be useable with arbitrary data,
+  # meaning that as long as your data is consistent it will work with this gem.
+  # Be it Ruby on Rails Models or simply integers.
+  #
+  # Certain tournament systems will not make use of certain parts of this
+  # interface. You can for example leave out `#get_team_score` if you're not
+  # using the Swiss tournament system.
   # :reek:UnusedParameters
   class Driver
     # rubocop:disable Lint/UnusedMethodArgument
