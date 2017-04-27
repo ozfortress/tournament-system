@@ -18,6 +18,7 @@ module Tournament
 
       private
 
+      # Match the top half with the bottom half
       def dutch_pairing(teams)
         half = teams.length / 2
         top = teams[0...half]
