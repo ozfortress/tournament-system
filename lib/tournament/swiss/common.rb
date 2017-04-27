@@ -44,7 +44,7 @@ module Tournament
               groups[new_key] = group + groups[new_key]
             # If there isn't, merge into the adjacent greater group
             else
-              new_key = group_keys[index - 1]
+              new_key = new_keys[-1]
               groups[new_key] += group
             end
           # Leave larger groups the way they are
