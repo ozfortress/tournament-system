@@ -82,7 +82,7 @@ describe Tournament::Swiss do
           }
           driver = TestDriver.new(teams: teams, winners: winners)
 
-          (1..3).each do |round|
+          3.times do
             # Sort teams
             driver.teams = driver.teams.sort_by
                                  .with_index { |t, i| [-driver.scores[t], i] }
@@ -128,7 +128,7 @@ describe Tournament::Swiss do
           }
           driver = TestDriver.new(teams: teams, winners: winners)
 
-          (1..3).each do |round|
+          3.times do
             # Sort teams
             driver.teams = driver.teams.sort_by
                                  .with_index { |t, i| [-driver.scores[t], i] }

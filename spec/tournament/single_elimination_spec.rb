@@ -88,7 +88,7 @@ describe Tournament::SingleElimination do
         winners = { [1, 4] => 1, [2, 3] => 3, [3, 1] => 3 }
         driver = TestDriver.new(teams: (1..4).to_a, winners: winners)
 
-        2.times do |round|
+        2.times do
           described_class.generate driver
           driver.matches += driver.created_matches.map do |match|
             [match.home_team, match.away_team]
