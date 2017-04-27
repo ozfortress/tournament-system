@@ -24,9 +24,9 @@ describe Tournament::SingleElimination do
         expect(driver.created_matches.length).to eq(2)
         match1, match2 = driver.created_matches
         expect(match1.home_team).to eq(1)
-        expect(match1.away_team).to eq(3)
+        expect(match1.away_team).to eq(4)
         expect(match2.home_team).to eq(2)
-        expect(match2.away_team).to eq(4)
+        expect(match2.away_team).to eq(3)
       end
 
       it 'works for 5 teams' do
@@ -36,13 +36,13 @@ describe Tournament::SingleElimination do
         expect(driver.created_matches.length).to eq(4)
         match1, match2, match3, match4 = driver.created_matches
         bies = [1, 2, 3]
-        [match1, match3, match2].zip(bies).each do |match, team|
+        [match1, match3, match4].zip(bies).each do |match, team|
           expect(match.home_team).to eq(team)
           expect(match.away_team).to be nil
         end
 
-        expect(match4.home_team).to eq(4)
-        expect(match4.away_team).to eq(5)
+        expect(match2.home_team).to eq(4)
+        expect(match2.away_team).to eq(5)
       end
 
       it 'works for 6 teams' do
@@ -53,11 +53,11 @@ describe Tournament::SingleElimination do
         match1, match2, match3, match4 = driver.created_matches
         expect(match1.home_team).to eq(1)
         expect(match1.away_team).to be nil
-        expect(match2.home_team).to eq(3)
+        expect(match2.home_team).to eq(4)
         expect(match2.away_team).to eq(5)
         expect(match3.home_team).to eq(2)
         expect(match3.away_team).to be nil
-        expect(match4.home_team).to eq(4)
+        expect(match4.home_team).to eq(3)
         expect(match4.away_team).to eq(6)
       end
 
@@ -67,14 +67,14 @@ describe Tournament::SingleElimination do
 
         expect(driver.created_matches.length).to eq(8)
         matches = [
-          [1, 9],
-          [5, 13],
-          [3, 11],
-          [7, 15],
-          [2, 10],
-          [6, 14],
-          [4, 12],
-          [8, 16],
+          [1, 16],
+          [8, 9],
+          [4, 13],
+          [5, 12],
+          [2, 15],
+          [7, 10],
+          [3, 14],
+          [6, 11],
         ]
         driver.created_matches.zip(matches).each do |match, teams|
           expect(match.home_team).to eq(teams[0])
@@ -85,7 +85,7 @@ describe Tournament::SingleElimination do
 
     context 'full tournament' do
       it 'works for 4 teams' do
-        winners = { [1, 3] => 3, [2, 4] => 2, [3, 2] => 2 }
+        winners = { [1, 4] => 1, [2, 3] => 3, [3, 1] => 3 }
         driver = TestDriver.new(teams: (1..4).to_a, winners: winners)
 
         (1..2).each do |round|

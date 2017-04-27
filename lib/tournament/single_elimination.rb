@@ -30,13 +30,11 @@ module Tournament
     end
 
     def padd_teams(teams)
-      # Insert the padding after the top half of the total number of teams
-      total = 2**total_rounds_for_teams(teams)
-      half = total / 2
+      required = 2**total_rounds_for_teams(teams)
+      padding = required - teams.length
 
-      padding = total - teams.length
-
-      teams[0...half] + [nil] * padding + teams[half...teams.length]
+      # Insert the padding at the bottom to give top teams byes
+      teams + [nil] * padding
     end
 
     def total_rounds_for_teams(teams)
