@@ -39,10 +39,6 @@ class Driver < Tournament::Driver
     ...
   end
 
-  def matches_for_round(round)
-    ...
-  end
-
   def seeded_teams
     ...
   end

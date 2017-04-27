@@ -10,24 +10,24 @@ describe Tournament::PagePlayoff do
       driver = TestDriver.new
       expect(described_class.guess_round(driver)).to eq(0)
 
-      driver.test_matches[0] = [[1, 2], [3, 4]]
+      driver.matches = [[1, 2], [3, 4]]
       expect(described_class.guess_round(driver)).to eq(1)
 
-      driver.test_matches[0] = [[1, 2], [3, 4], [2, 3]]
+      driver.matches = [[1, 2], [3, 4], [2, 3]]
       expect(described_class.guess_round(driver)).to eq(2)
     end
 
     it 'handles invalid input' do
       driver = TestDriver.new
-      driver.test_matches[0] = [[1, 2]]
+      driver.matches = [[1, 2]]
       expect { described_class.guess_round(driver) }
         .to raise_exception Exception
 
-      driver.test_matches[0] = [[1, 2], [3, 4], [2, 3], [1, 2]]
+      driver.matches = [[1, 2], [3, 4], [2, 3], [1, 2]]
       expect { described_class.guess_round(driver) }
         .to raise_exception Exception
 
-      driver.test_matches[0] = [[1, 2], [3, 4], [2, 3], [1, 2], [3, 4]]
+      driver.matches = [[1, 2], [3, 4], [2, 3], [1, 2], [3, 4]]
       expect { described_class.guess_round(driver) }
         .to raise_exception Exception
     end
@@ -51,7 +51,7 @@ describe Tournament::PagePlayoff do
     end
 
     context 'semi-finals' do
-      let(:matches) { { 0 => [[1, 2], [3, 4]] } }
+      let(:matches) { [[1, 2], [3, 4]] }
 
       it 'works' do
         winners = { [1, 2] => 2, [3, 4] => 4 }
@@ -67,7 +67,7 @@ describe Tournament::PagePlayoff do
     end
 
     context 'grand-finals' do
-      let(:matches) { { 0 => [[1, 2], [3, 4]], 1 => [[1, 4]] } }
+      let(:matches) { [[1, 2], [3, 4], [1, 4]] }
 
       it 'generates grand final match' do
         winners = { [1, 2] => 2, [3, 4] => 4, [1, 4] => 1 }

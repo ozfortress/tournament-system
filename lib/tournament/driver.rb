@@ -12,11 +12,6 @@ module Tournament
       raise 'Not Implemented'
     end
 
-    # Get the matches played for a particular round
-    def matches_for_round(round)
-      raise 'Not Implemented'
-    end
-
     # Get the teams playing with their initial seedings
     def seeded_teams
       raise 'Not Implemented'

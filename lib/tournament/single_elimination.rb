@@ -4,12 +4,12 @@ module Tournament
     extend self
 
     def generate(driver, options = {})
-      round = options[:round] || guess_round(driver)
+      round = guess_round(driver)
 
       teams = if driver.matches.empty?
                 seed_teams driver.seeded_teams, options
               else
-                last_matches = driver.matches_for_round(round - 1)
+                last_matches = previous_round_matches driver, round
                 get_match_winners driver, last_matches
               end
 
@@ -24,6 +24,7 @@ module Tournament
       rounds = total_rounds(driver)
       teams_count = 2**rounds
       matches_count = driver.matches.length
+
       # Make sure we don't have too many matches
       raise ArgumentError, 'Too many matches' unless teams_count > matches_count
 
@@ -58,6 +59,13 @@ module Tournament
 
     def get_match_winners(driver, matches)
       matches.map { |match| driver.get_match_winner(match) }
+    end
+
+    def previous_round_matches(driver, round)
+      rounds_left = total_rounds(driver) - round - 1
+      previous_matches_count = 2**rounds_left
+
+      driver.matches[-previous_matches_count, previous_matches_count]
     end
 
     def create_matches(driver, teams)

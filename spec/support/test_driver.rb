@@ -6,7 +6,7 @@ class TestDriver < Tournament::Driver
   def initialize(options = {})
     @teams = options[:teams] || []
     @ranked_teams = options[:ranked_teams] || @teams
-    @matches = options[:matches] || {}
+    @matches = options[:matches] || []
     @winners = options[:winners] || {}
     @scores = options[:scores] || Hash.new(0)
     @created_matches = []
@@ -15,6 +15,7 @@ class TestDriver < Tournament::Driver
   attr_accessor :scores
   attr_accessor :teams
   attr_accessor :ranked_teams
+  attr_accessor :matches
   attr_accessor :created_matches
 
   def seeded_teams
@@ -23,14 +24,6 @@ class TestDriver < Tournament::Driver
 
   def ranked_teams
     @teams
-  end
-
-  def matches_for_round(round)
-    @matches[round]
-  end
-
-  def matches
-    @matches.values.reduce(:+) || []
   end
 
   def get_match_teams(match)

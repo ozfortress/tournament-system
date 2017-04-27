@@ -88,7 +88,7 @@ describe Tournament::Swiss do
                                  .with_index { |t, i| [-driver.scores[t], i] }
             described_class.generate driver, pair_options: { min_pair_size: 2 }
 
-            driver.test_matches[round] = driver.created_matches.map do |match|
+            driver.matches += driver.created_matches.map do |match|
               match = [match.home_team, match.away_team]
               driver.scores[driver.get_match_winner(match)] += 1
               match
@@ -134,7 +134,7 @@ describe Tournament::Swiss do
                                  .with_index { |t, i| [-driver.scores[t], i] }
             described_class.generate driver, pair_options: { min_pair_size: 2 }
 
-            driver.test_matches[round] = driver.created_matches.map do |match|
+            driver.matches += driver.created_matches.map do |match|
               match = [match.home_team, match.away_team]
               if match[1].nil?
                 driver.scores[match[0]] += 1

@@ -19,7 +19,7 @@ describe Tournament::SingleElimination do
     context 'first round' do
       it 'works for 4 teams' do
         driver = TestDriver.new(teams: [1, 2, 3, 4])
-        described_class.generate driver, round: 0
+        described_class.generate driver
 
         expect(driver.created_matches.length).to eq(2)
         match1, match2 = driver.created_matches
@@ -31,7 +31,7 @@ describe Tournament::SingleElimination do
 
       it 'works for 5 teams' do
         driver = TestDriver.new(teams: [1, 2, 3, 4, 5])
-        described_class.generate driver, round: 0
+        described_class.generate driver
 
         expect(driver.created_matches.length).to eq(4)
         match1, match2, match3, match4 = driver.created_matches
@@ -47,7 +47,7 @@ describe Tournament::SingleElimination do
 
       it 'works for 6 teams' do
         driver = TestDriver.new(teams: [1, 2, 3, 4, 5, 6])
-        described_class.generate driver, round: 0
+        described_class.generate driver
 
         expect(driver.created_matches.length).to eq(4)
         match1, match2, match3, match4 = driver.created_matches
@@ -63,7 +63,7 @@ describe Tournament::SingleElimination do
 
       it 'works for 16 teams' do
         driver = TestDriver.new(teams: (1..16).to_a)
-        described_class.generate driver, round: 0
+        described_class.generate driver
 
         expect(driver.created_matches.length).to eq(8)
         matches = [
@@ -88,9 +88,9 @@ describe Tournament::SingleElimination do
         winners = { [1, 4] => 1, [2, 3] => 3, [3, 1] => 3 }
         driver = TestDriver.new(teams: (1..4).to_a, winners: winners)
 
-        (1..2).each do |round|
-          described_class.generate driver, round: round
-          driver.test_matches[round] = driver.created_matches.map do |match|
+        2.times do |round|
+          described_class.generate driver
+          driver.matches += driver.created_matches.map do |match|
             [match.home_team, match.away_team]
           end
           driver.created_matches = []
@@ -106,19 +106,19 @@ describe Tournament::SingleElimination do
       driver = TestDriver.new(teams: (1..4).to_a)
       guess = -> { described_class.guess_round(driver) }
 
-      driver.test_matches = {}
+      driver.matches = []
       expect(guess.call).to eq(0)
 
-      driver.test_matches = { 0 => (0...2).to_a }
+      driver.matches = (0...2).to_a
       expect(guess.call).to eq(1)
 
-      driver.test_matches = { 0 => (0...3).to_a }
+      driver.matches = (0...3).to_a
       expect(guess.call).to eq(2)
 
-      driver.test_matches = { 0 => (0...1).to_a }
+      driver.matches = (0...1).to_a
       expect { guess.call }.to raise_error ArgumentError
 
-      driver.test_matches = { 0 => (0...4).to_a }
+      driver.matches = (0...4).to_a
       expect { guess.call }.to raise_error ArgumentError
     end
 
@@ -126,28 +126,28 @@ describe Tournament::SingleElimination do
       driver = TestDriver.new(teams: (1..5).to_a)
       guess = -> { described_class.guess_round(driver) }
 
-      driver.test_matches = {}
+      driver.matches = []
       expect(guess.call).to eq(0)
 
-      driver.test_matches = { 0 => (0...4).to_a }
+      driver.matches = (0...4).to_a
       expect(guess.call).to eq(1)
 
-      driver.test_matches = { 0 => (0...6).to_a }
+      driver.matches = (0...6).to_a
       expect(guess.call).to eq(2)
 
-      driver.test_matches = { 0 => (0...7).to_a }
+      driver.matches = (0...7).to_a
       expect(guess.call).to eq(3)
 
-      driver.test_matches = { 0 => (0...1).to_a }
+      driver.matches = (0...1).to_a
       expect { guess.call }.to raise_error ArgumentError
 
-      driver.test_matches = { 0 => (0...2).to_a }
+      driver.matches = (0...2).to_a
       expect { guess.call }.to raise_error ArgumentError
 
-      driver.test_matches = { 0 => (0...3).to_a }
+      driver.matches = (0...3).to_a
       expect { guess.call }.to raise_error ArgumentError
 
-      driver.test_matches = { 0 => (0...8).to_a }
+      driver.matches = (0...8).to_a
       expect { guess.call }.to raise_error ArgumentError
     end
 
@@ -155,25 +155,25 @@ describe Tournament::SingleElimination do
       driver = TestDriver.new(teams: (1..64).to_a)
       guess = -> { described_class.guess_round(driver) }
 
-      driver.test_matches = {}
+      driver.matches = []
       expect(guess.call).to eq(0)
 
-      driver.test_matches = { 0 => (0...32).to_a }
+      driver.matches = (0...32).to_a
       expect(guess.call).to eq(1)
 
-      driver.test_matches = { 0 => (0...48).to_a }
+      driver.matches = (0...48).to_a
       expect(guess.call).to eq(2)
 
-      driver.test_matches = { 0 => (0...56).to_a }
+      driver.matches = (0...56).to_a
       expect(guess.call).to eq(3)
 
-      driver.test_matches = { 0 => (0...60).to_a }
+      driver.matches = (0...60).to_a
       expect(guess.call).to eq(4)
 
-      driver.test_matches = { 0 => (0...62).to_a }
+      driver.matches = (0...62).to_a
       expect(guess.call).to eq(5)
 
-      driver.test_matches = { 0 => (0...63).to_a }
+      driver.matches = (0...63).to_a
       expect(guess.call).to eq(6)
     end
   end
