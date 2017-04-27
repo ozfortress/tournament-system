@@ -4,7 +4,7 @@ module Tournament
     extend self
 
     def generate(driver, options = {})
-      round = options[:round] || raise('Missing option :round')
+      round = options[:round] || guess_round(driver)
 
       teams = if driver.matches.empty?
                 seed_teams driver.seeded_teams, options
@@ -18,6 +18,19 @@ module Tournament
 
     def total_rounds(driver)
       total_rounds_for_teams(driver.seeded_teams)
+    end
+
+    def guess_round(driver)
+      rounds = total_rounds(driver)
+      teams_count = 2**rounds
+      matches_count = driver.matches.length
+      # Make sure we don't have too many matches
+      raise ArgumentError, 'Too many matches' unless teams_count > matches_count
+
+      round = rounds - Math.log2(teams_count - matches_count)
+      # Make sure we don't have some weird number of matches
+      raise ArgumentError, 'Invalid number of matches' unless (round % 1).zero?
+      round.to_i
     end
 
     private

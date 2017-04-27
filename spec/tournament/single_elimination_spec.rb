@@ -100,4 +100,81 @@ describe Tournament::SingleElimination do
       end
     end
   end
+
+  describe '#guess_round' do
+    it 'guesses right for 4 teams' do
+      driver = TestDriver.new(teams: (1..4).to_a)
+      guess = -> { described_class.guess_round(driver) }
+
+      driver.test_matches = {}
+      expect(guess.call).to eq(0)
+
+      driver.test_matches = { 0 => (0...2).to_a }
+      expect(guess.call).to eq(1)
+
+      driver.test_matches = { 0 => (0...3).to_a }
+      expect(guess.call).to eq(2)
+
+      driver.test_matches = { 0 => (0...1).to_a }
+      expect { guess.call }.to raise_error ArgumentError
+
+      driver.test_matches = { 0 => (0...4).to_a }
+      expect { guess.call }.to raise_error ArgumentError
+    end
+
+    it 'guesses right for 5 teams' do
+      driver = TestDriver.new(teams: (1..5).to_a)
+      guess = -> { described_class.guess_round(driver) }
+
+      driver.test_matches = {}
+      expect(guess.call).to eq(0)
+
+      driver.test_matches = { 0 => (0...4).to_a }
+      expect(guess.call).to eq(1)
+
+      driver.test_matches = { 0 => (0...6).to_a }
+      expect(guess.call).to eq(2)
+
+      driver.test_matches = { 0 => (0...7).to_a }
+      expect(guess.call).to eq(3)
+
+      driver.test_matches = { 0 => (0...1).to_a }
+      expect { guess.call }.to raise_error ArgumentError
+
+      driver.test_matches = { 0 => (0...2).to_a }
+      expect { guess.call }.to raise_error ArgumentError
+
+      driver.test_matches = { 0 => (0...3).to_a }
+      expect { guess.call }.to raise_error ArgumentError
+
+      driver.test_matches = { 0 => (0...8).to_a }
+      expect { guess.call }.to raise_error ArgumentError
+    end
+
+    it 'guesses right for 63 teams' do
+      driver = TestDriver.new(teams: (1..64).to_a)
+      guess = -> { described_class.guess_round(driver) }
+
+      driver.test_matches = {}
+      expect(guess.call).to eq(0)
+
+      driver.test_matches = { 0 => (0...32).to_a }
+      expect(guess.call).to eq(1)
+
+      driver.test_matches = { 0 => (0...48).to_a }
+      expect(guess.call).to eq(2)
+
+      driver.test_matches = { 0 => (0...56).to_a }
+      expect(guess.call).to eq(3)
+
+      driver.test_matches = { 0 => (0...60).to_a }
+      expect(guess.call).to eq(4)
+
+      driver.test_matches = { 0 => (0...62).to_a }
+      expect(guess.call).to eq(5)
+
+      driver.test_matches = { 0 => (0...63).to_a }
+      expect(guess.call).to eq(6)
+    end
+  end
 end
