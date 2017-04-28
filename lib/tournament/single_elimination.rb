@@ -62,10 +62,10 @@ module Tournament
     end
 
     def previous_round_matches(driver, round)
-      rounds_left = total_rounds(driver) - round - 1
+      rounds_left = total_rounds(driver) - round
       previous_matches_count = 2**rounds_left
 
-      driver.matches[-previous_matches_count, previous_matches_count]
+      driver.matches.last(previous_matches_count)
     end
 
     def create_matches(driver, teams)
