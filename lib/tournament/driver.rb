@@ -14,6 +14,7 @@ module Tournament
   # :reek:UnusedParameters
   class Driver
     # rubocop:disable Lint/UnusedMethodArgument
+    # :nocov:
 
     # Get all matches
     def matches
@@ -50,6 +51,7 @@ module Tournament
       raise 'Not Implemented'
     end
 
+    # :nocov:
     # rubocop:enable Lint/UnusedMethodArgument
 
     # Get the losing team of a specific match
