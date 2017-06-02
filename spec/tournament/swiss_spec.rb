@@ -144,6 +144,42 @@ describe Tournament::Swiss do
           end
         end
       end
+
+      it 'handles no minimum sized groups' do
+        teams = [1, 2, 3, 4]
+        matches = [[1, 2], [3, 4], [2, 3], [1, 4], [1, 3], [2, 4]]
+        scores = { 1 => 1, 2 => 2, 3 => 3, 4 => 4 }
+        driver = TestDriver.new(teams: teams, matches: matches, scores: scores)
+
+        described_class.generate driver, pair_options: { min_pair_size: 4 }
+        expect(driver.created_matches.length).to eq(2)
+
+        driver.created_matches = []
+        described_class.generate driver, pair_options: { min_pair_size: 2 }
+        expect(driver.created_matches.length).to eq(2)
+
+        driver.created_matches = []
+        described_class.generate driver, pair_options: { min_pair_size: 1 }
+        expect(driver.created_matches.length).to eq(2)
+      end
+
+      it 'handles no minimum sized groups with byes' do
+        teams = [1, 2, 3]
+        matches = [[1, 2], [3, nil], [2, 3], [1, nil], [1, 3], [2, nil]]
+        scores = { 1 => 1, 2 => 2, 3 => 3 }
+        driver = TestDriver.new(teams: teams, matches: matches, scores: scores)
+
+        described_class.generate driver, pair_options: { min_pair_size: 4 }
+        expect(driver.created_matches.length).to eq(2)
+
+        driver.created_matches = []
+        described_class.generate driver, pair_options: { min_pair_size: 2 }
+        expect(driver.created_matches.length).to eq(2)
+
+        driver.created_matches = []
+        described_class.generate driver, pair_options: { min_pair_size: 1 }
+        expect(driver.created_matches.length).to eq(2)
+      end
     end
   end
 end

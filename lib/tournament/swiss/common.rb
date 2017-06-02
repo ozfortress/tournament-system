@@ -45,7 +45,14 @@ module Tournament
             # If there isn't, merge into the adjacent greater group
             else
               new_key = new_keys[-1]
-              groups[new_key] += group
+
+              if new_key
+                groups[new_key] += group
+              else
+                # If there are no new keys just use the current key
+                new_keys << key
+                groups[key] = group
+              end
             end
           # Leave larger groups the way they are
           else
