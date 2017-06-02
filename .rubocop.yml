@@ -1,4 +1,5 @@
 AllCops:
+  DisplayCopNames: true
   TargetRubyVersion: 2.3
 
 # This is fine, really

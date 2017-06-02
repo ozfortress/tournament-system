@@ -147,7 +147,13 @@ describe Tournament::Swiss do
 
       it 'minimises duplicate matches' do
         teams = [1, 2, 3]
-        matches = [[1, 2], [3, nil], [1, 3], [2, nil], [2, 3], [1, nil], [1, 2], [3, nil], [1, 3], [2, nil]]
+        matches = [
+          [1, 2], [3, nil],
+          [1, 3], [2, nil],
+          [2, 3], [1, nil],
+          [1, 2], [3, nil],
+          [1, 3], [2, nil],
+        ]
         scores = { 1 => 1, 2 => 2, 3 => 3 }
         driver = TestDriver.new(teams: teams, matches: matches, scores: scores)
 

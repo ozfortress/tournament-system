@@ -27,7 +27,8 @@ module Tournament
 
       # Merges small groups to the right (if possible) such that all groups
       # are larger than min_size.
-      # rubocop:disable Metrics/MethodLength :reek:TooManyStatements
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+      # :reek:TooManyStatements
       def merge_small_groups(groups, group_keys, min_size)
         new_keys = []
 
@@ -67,10 +68,9 @@ module Tournament
 
       # Get a set of already played matches. Matches are also sets
       def matches_set(driver)
-        existing_matches = Hash.new
+        existing_matches = Hash.new(0)
         driver.matches.each do |match|
           match_teams = Set.new driver.get_match_teams match
-          existing_matches[match_teams] ||= 0
           existing_matches[match_teams] += 1
         end
         existing_matches
@@ -83,7 +83,7 @@ module Tournament
 
       # Count the number of matches already played
       def count_existing_matches(matches, existing_matches)
-        matches.map { |match| existing_matches[Set.new(match)] || 0 }.reduce(:+)
+        matches.map { |match| existing_matches[Set.new(match)] }.reduce(:+)
       end
 
       # Finds the first permutation of teams that has a unique pairing.

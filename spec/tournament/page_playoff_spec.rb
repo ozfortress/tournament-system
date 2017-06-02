@@ -38,7 +38,8 @@ describe Tournament::PagePlayoff do
 
     it 'handles invalid round option' do
       driver = TestDriver.new(teams: teams)
-      expect { described_class.generate driver, round: 3 }.to raise_exception Exception
+      expect { described_class.generate driver, round: 3 }
+        .to raise_exception Exception
     end
 
     it 'handles invalid number of teams' do
