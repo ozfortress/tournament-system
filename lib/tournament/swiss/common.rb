@@ -67,10 +67,11 @@ module Tournament
 
       # Get a set of already played matches. Matches are also sets
       def matches_set(driver)
-        existing_matches = Set.new
+        existing_matches = Hash.new
         driver.matches.each do |match|
-          match_teams = driver.get_match_teams match
-          existing_matches.add Set.new match_teams
+          match_teams = Set.new driver.get_match_teams match
+          existing_matches[match_teams] ||= 0
+          existing_matches[match_teams] += 1
         end
         existing_matches
       end
@@ -82,7 +83,7 @@ module Tournament
 
       # Count the number of matches already played
       def count_existing_matches(matches, existing_matches)
-        matches.count { |match| existing_matches.include?(Set.new(match)) }
+        matches.map { |match| existing_matches[Set.new(match)] || 0 }.reduce(:+)
       end
 
       # Finds the first permutation of teams that has a unique pairing.
@@ -108,10 +109,10 @@ module Tournament
             best_matches = matches
           end
         end
-        # rubocop:enable Metrics/MethodLength
 
         best_matches
       end
+      # rubocop:enable Metrics/MethodLength
     end
   end
 end

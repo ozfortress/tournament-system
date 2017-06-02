@@ -145,6 +145,22 @@ describe Tournament::Swiss do
         end
       end
 
+      it 'minimises duplicate matches' do
+        teams = [1, 2, 3]
+        matches = [[1, 2], [3, nil], [1, 3], [2, nil], [2, 3], [1, nil], [1, 2], [3, nil], [1, 3], [2, nil]]
+        scores = { 1 => 1, 2 => 2, 3 => 3 }
+        driver = TestDriver.new(teams: teams, matches: matches, scores: scores)
+
+        described_class.generate driver, pair_options: { min_pair_size: 4 }
+
+        expect(driver.created_matches.length).to eq(2)
+        match1, match2 = driver.created_matches
+        expect(match1.home_team).to eq(3)
+        expect(match1.away_team).to eq(2)
+        expect(match2.home_team).to eq(1)
+        expect(match2.away_team).to be(nil)
+      end
+
       it 'handles no minimum sized groups' do
         teams = [1, 2, 3, 4]
         matches = [[1, 2], [3, 4], [2, 3], [1, 4], [1, 3], [2, 4]]
