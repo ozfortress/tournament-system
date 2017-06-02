@@ -50,14 +50,6 @@ module Tournament
           pairs
         end
       end
-
-      def fix_matches(teams, pairs, existing_matches)
-        if any_match_exists?(pairs, existing_matches)
-          first_permutation_pairing(teams, existing_matches)
-        else
-          pairs
-        end
-      end
     end
   end
 end
