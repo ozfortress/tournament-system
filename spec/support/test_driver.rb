@@ -22,10 +22,6 @@ class TestDriver < Tournament::Driver
     @teams
   end
 
-  def ranked_teams
-    @teams
-  end
-
   def get_match_teams(match)
     match
   end
