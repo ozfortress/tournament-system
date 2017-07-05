@@ -6,30 +6,15 @@ describe Tournament::PagePlayoff do
   end
 
   describe '#guess_round' do
-    it 'works for valid input' do
-      driver = TestDriver.new
-      expect(described_class.guess_round(driver)).to eq(0)
+    it 'calls Algorithm::PagePlayoff#guess_round' do
+      driver = instance_double('Driver')
+      expect(driver).to receive(:matches) { [1, 2] }
 
-      driver.matches = [[1, 2], [3, 4]]
-      expect(described_class.guess_round(driver)).to eq(1)
+      expect(Tournament::Algorithm::PagePlayoff)
+        .to receive(:guess_round)
+          .with(2) { 11 }
 
-      driver.matches = [[1, 2], [3, 4], [2, 3]]
-      expect(described_class.guess_round(driver)).to eq(2)
-    end
-
-    it 'handles invalid input' do
-      driver = TestDriver.new
-      driver.matches = [[1, 2]]
-      expect { described_class.guess_round(driver) }
-        .to raise_exception Exception
-
-      driver.matches = [[1, 2], [3, 4], [2, 3], [1, 2]]
-      expect { described_class.guess_round(driver) }
-        .to raise_exception Exception
-
-      driver.matches = [[1, 2], [3, 4], [2, 3], [1, 2], [3, 4]]
-      expect { described_class.guess_round(driver) }
-        .to raise_exception Exception
+      expect(described_class.guess_round(driver)).to eq(11)
     end
   end
 

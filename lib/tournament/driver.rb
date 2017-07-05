@@ -60,11 +60,48 @@ module Tournament
       get_match_teams(match).reject { |team| team == winner }.first
     end
 
+    # Get a hash of unique team pairs and their number of occurences.
+    #
+    # @return [Hash{Set(team, team) => Integer}]
+    def matches_hash
+      @matches_hash ||= build_matches_hash
+    end
+
+    # Count the number of times each pair of teams has played.
+    def count_duplicate_matches(matches)
+      matches.map { |match| matches_hash[Set.new match] }.reduce(0, :+)
+    end
+
+    # Create a match.
     def create_match(home_team, away_team)
       home_team, away_team = away_team, home_team unless home_team
       raise 'Invalid match' unless home_team
 
       build_match(home_team, away_team)
+    end
+
+    # Create a bunch of matches.
+    def create_matches(matches)
+      matches.each do |home_team, away_team|
+        create_match(home_team, away_team)
+      end
+    end
+
+    # Get a hash of the points of all ranked teams.
+    #
+    # @return [Hash{team => Number}]
+    def points_hash
+      @points_hash = ranked_teams.map { |team| [team, get_team_score(team)] }
+                                 .to_h
+    end
+
+    private
+
+    def build_matches_hash
+      matches.each_with_object(Hash.new(0)) do |match, counter|
+        match = Set.new get_match_teams(match)
+        counter[match] += 1
+      end
     end
   end
 end

@@ -1,58 +1,52 @@
+require 'tournament/algorithm/util'
+require 'tournament/algorithm/round_robin'
+
 module Tournament
   # Implements the round-robin tournament system.
-  # Requires a consistent seeder, defaulting to Seeder::None
   module RoundRobin
     extend self
 
+    # Generate matches with the given driver.
+    #
+    # @param driver [Driver]
+    # @option options [Integer] round the round to generate
+    # @return [void]
     def generate(driver, options = {})
       round = options[:round] || guess_round(driver)
 
-      teams = seed_teams driver.seeded_teams, options
+      teams = Algorithm::Util.padd_teams(driver.seeded_teams)
 
-      teams = rotate_to_round teams, round
+      matches = Algorithm::RoundRobin.round_robin_pairing(teams, round)
 
-      create_matches driver, teams, round
+      create_matches driver, matches, round
     end
 
+    # The total number of rounds needed for a round robin tournament with the
+    # given driver.
+    #
+    # @param driver [Driver]
+    # @return [Integer]
     def total_rounds(driver)
-      team_count(driver) - 1
+      Algorithm::RoundRobin.total_rounds(driver.seeded_teams.length)
     end
 
+    # Guess the next round number (starting at 0) from the state in driver.
+    #
+    # @param driver [Driver]
+    # @return [Integer]
     def guess_round(driver)
-      match_count = driver.matches.length
-
-      match_count / (team_count(driver) / 2)
+      Algorithm::RoundRobin.guess_round(driver.seeded_teams.length,
+                                        driver.matches.length)
     end
 
     private
 
-    def team_count(driver)
-      count = driver.seeded_teams.length
-      count += 1 if count.odd?
-      count
-    end
-
-    def seed_teams(teams, options)
-      teams << nil if teams.length.odd?
-
-      seeder = options[:seeder] || Seeder::None
-      seeder.seed teams
-    end
-
-    def rotate_to_round(teams, round)
-      rotateable = teams[1..-1]
-
-      [teams[0]] + rotateable.rotate(-round)
-    end
-
-    def create_matches(driver, teams, round)
-      teams[0...teams.length / 2].each_with_index do |home_team, index|
-        away_team = teams[-index - 1]
-
+    def create_matches(driver, matches, round)
+      matches.each do |match|
         # Alternate home/away
-        home_team, away_team = away_team, home_team if round.odd?
+        match = match.reverse if round.odd? && match[0]
 
-        driver.create_match(home_team, away_team)
+        driver.create_match(*match)
       end
     end
   end

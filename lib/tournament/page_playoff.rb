@@ -1,8 +1,15 @@
+require 'tournament/algorithm/page_playoff'
+require 'tournament/algorithm/pairers/adjacent'
+
 module Tournament
   # Implements the page playoff system.
   module PagePlayoff
     extend self
 
+    # Generate matches with the given driver.
+    #
+    # @param driver [Driver]
+    # @option options [Integer] round the round to generate
     def generate(driver, options = {})
       teams = driver.ranked_teams
       raise 'Page Playoffs only works with 4 teams' if teams.length != 4
@@ -18,32 +25,26 @@ module Tournament
       end
     end
 
-    def total_rounds
-      3
+    # The total number of rounds in a page playoff tournament
+    #
+    # @param _ for keeping the same interface as other tournament systems.
+    # @return [Integer]
+    def total_rounds(_ = nil)
+      Algorithm::PagePlayoff::TOTAL_ROUNDS
     end
 
+    # Guess the next round number (starting at 0) from the state in a driver.
+    #
+    # @param driver [Driver]
+    # @return [Integer]
     def guess_round(driver)
-      count = driver.matches.length
-
-      case count
-      when 0 then 0
-      when 2 then 1
-      when 3 then 2
-      else
-        raise 'Invalid number of matches'
-      end
+      Algorithm::PagePlayoff.guess_round(driver.matches.length)
     end
 
     private
 
-    def create_matches(driver, matches)
-      matches.each do |match|
-        driver.create_match match[0], match[1]
-      end
-    end
-
     def semi_finals(driver, teams)
-      create_matches driver, [[teams[0], teams[1]], [teams[2], teams[3]]]
+      driver.create_matches Algorithm::Pairers::Adjacent.pair(teams)
     end
 
     def preliminary_finals(driver)

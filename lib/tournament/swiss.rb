@@ -1,4 +1,4 @@
-require 'tournament/swiss/common'
+require 'tournament/algorithm/swiss'
 require 'tournament/swiss/dutch'
 
 module Tournament
@@ -6,34 +6,29 @@ module Tournament
   module Swiss
     extend self
 
+    # Generate matches with the given driver.
+    #
+    # @param driver [Driver]
+    # @option options [Pairer] pairer the pairing system to use, defaults to
+    #                                 {Dutch}
+    # @option options [Hash] pair_options options for the chosen pairing system,
+    #                                     see {Dutch} for more details
+    # @return [void]
     def generate(driver, options = {})
       pairer = options[:pairer] || Dutch
       pairer_options = options[:pair_options] || {}
 
-      teams = seed_teams driver.ranked_teams, options
+      pairings = pairer.pair(driver, pairer_options)
 
-      pairings = pairer.pair driver, teams, pairer_options
-
-      create_matches driver, pairings
+      driver.create_matches(pairings)
     end
 
+    # The minimum number of rounds to determine a winner.
+    #
+    # @param driver [Driver]
+    # @return [Integer]
     def minimum_rounds(driver)
-      team_count = driver.seeded_teams.length
-
-      Math.log2(team_count).ceil
-    end
-
-    private
-
-    def seed_teams(teams, options)
-      seeder = options[:seeder] || Seeder::None
-      seeder.seed teams
-    end
-
-    def create_matches(driver, pairings)
-      pairings.each do |pair|
-        driver.create_match(pair[0], pair[1])
-      end
+      Algorithm::Swiss.minimum_rounds(driver.seeded_teams.length)
     end
   end
 end

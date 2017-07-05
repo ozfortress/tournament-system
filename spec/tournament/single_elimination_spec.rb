@@ -1,17 +1,28 @@
 describe Tournament::SingleElimination do
   describe '#total_rounds' do
-    it 'works for valid input' do
-      driver = TestDriver.new(teams: [1, 2, 3])
-      expect(described_class.total_rounds(driver)).to eq(2)
+    it 'calls Algorithm::Swiss#total_rounds' do
+      driver = instance_double('Driver')
+      expect(driver).to receive(:seeded_teams) { [1, 2] }
 
-      driver = TestDriver.new(teams: [1, 2])
-      expect(described_class.total_rounds(driver)).to eq(1)
+      expect(Tournament::Algorithm::SingleBracket)
+        .to receive(:total_rounds)
+          .with(2) { 11 }
 
-      driver = TestDriver.new(teams: [1])
-      expect(described_class.total_rounds(driver)).to eq(0)
+      expect(described_class.total_rounds(driver)).to eq(11)
+    end
+  end
 
-      driver = TestDriver.new(teams: (1..9).to_a)
-      expect(described_class.total_rounds(driver)).to eq(4)
+  describe '#guess_round' do
+    it 'calls Algorithm::Swiss#guess_round' do
+      driver = instance_double('Driver')
+      expect(driver).to receive(:seeded_teams) { [1, 2, 3, 4] }
+      expect(driver).to receive(:matches) { [1, 2] }
+
+      expect(Tournament::Algorithm::SingleBracket)
+        .to receive(:guess_round)
+          .with(4, 2) { 11 }
+
+      expect(described_class.guess_round(driver)).to eq(11)
     end
   end
 

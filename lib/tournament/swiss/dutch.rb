@@ -1,53 +1,63 @@
+require 'tournament/algorithm/swiss'
+require 'tournament/algorithm/pairers/multi'
+require 'tournament/algorithm/pairers/halves'
+require 'tournament/algorithm/pairers/best_min_duplicates'
+
 module Tournament
   module Swiss
     # A simplified Dutch pairing system implementation.
     module Dutch
       extend self
-      extend Common
 
-      def pair(driver, teams, options = {})
-        return dutch_pairing(teams) if driver.matches.empty?
+      # Pair teams using dutch pairing for a swiss system tournament.
+      #
+      # @param driver [Driver]
+      # @option options [Integer] min_pair_size see
+      #     {Algorithm::Swiss#merge_small_groups for more details}
+      # @return [Array<Array(team, team)>] the generated pairs of teams
+      def pair(driver, options = {})
+        teams = driver.ranked_teams
 
-        groups, group_keys = group_teams_by_score(driver, teams)
+        # Special padding such that the bottom team gets a BYE
+        teams.insert(teams.length / 2, nil) if teams.length.odd?
+
+        points = driver.points_hash
+        groups = Algorithm::Swiss.group_teams_by_score(teams, points)
 
         min_pair_size = options[:min_pair_size] || 4
-        group_keys = merge_small_groups(groups, group_keys, min_pair_size)
+        Algorithm::Swiss.merge_small_groups(groups, min_pair_size)
 
-        pair_groups driver, groups, group_keys
+        Algorithm::Swiss.rollover_groups(groups)
+
+        pair_groups driver, groups
       end
 
       private
 
-      # Match the top half with the bottom half
-      def dutch_pairing(teams)
-        half = teams.length / 2
-        top = teams[0...half]
-        bottom = teams[half..-1]
-        top << nil if top.length < bottom.length
+      def pairer_funcs(driver, group)
+        points = driver.points_hash
+        matches = driver.matches_hash
 
-        top.zip(bottom).to_a
+        [
+          -> () { Algorithm::Pairers::Halves.pair(group) },
+          lambda do
+            Algorithm::Pairers::BestMinDuplicates.pair(group, points, matches)
+          end,
+        ]
       end
 
-      def pair_groups(driver, groups, group_keys)
-        existing_matches = matches_set(driver)
-
-        matches = []
-        each_group_with_rollover(groups, group_keys) do |group|
-          matches += pair_group(group, existing_matches)
-        end
-
-        matches
+      def pair_groups(driver, groups)
+        groups.map { |group| pair_group(driver, group) }.reduce(:+)
       end
 
-      def pair_group(group, existing_matches)
-        pairs = dutch_pairing(group)
+      def pair_group(driver, group)
+        Algorithm::Pairers::Multi.pair(pairer_funcs(driver, group)) do |matches|
+          duplicates = driver.count_duplicate_matches(matches)
 
-        if any_match_exists?(pairs, existing_matches)
-          first_permutation_pairing(group, existing_matches) do |perm_pairs|
-            dutch_pairing(perm_pairs)
-          end
-        else
-          pairs
+          # Early return when there are no duplicates, prefer earlier pairers
+          return matches if duplicates.zero?
+
+          -duplicates
         end
       end
     end
