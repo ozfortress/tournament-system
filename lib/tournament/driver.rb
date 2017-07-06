@@ -143,9 +143,9 @@ module Tournament
 
     # Get a hash of the scores of all ranked teams. Used by tournament systems.
     #
-    # @return [Hash{team => Number}]
-    def points_hash
-      @points_hash = ranked_teams.map { |team| [team, get_team_score(team)] }
+    # @return [Hash{team => Number}] a mapping from teams to scores
+    def scores_hash
+      @scores_hash = ranked_teams.map { |team| [team, get_team_score(team)] }
                                  .to_h
     end
 

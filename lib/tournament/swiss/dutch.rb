@@ -21,8 +21,8 @@ module Tournament
         # Special padding such that the bottom team gets a BYE
         teams.insert(teams.length / 2, nil) if teams.length.odd?
 
-        points = driver.points_hash
-        groups = Algorithm::Swiss.group_teams_by_score(teams, points)
+        scores = driver.scores_hash
+        groups = Algorithm::Swiss.group_teams_by_score(teams, scores)
 
         min_pair_size = options[:min_pair_size] || 4
         Algorithm::Swiss.merge_small_groups(groups, min_pair_size)
@@ -35,13 +35,13 @@ module Tournament
       private
 
       def pairer_funcs(driver, group)
-        points = driver.points_hash
+        scores = driver.scores_hash
         matches = driver.matches_hash
 
         [
           -> () { Algorithm::Pairers::Halves.pair(group) },
           lambda do
-            Algorithm::Pairers::BestMinDuplicates.pair(group, points, matches)
+            Algorithm::Pairers::BestMinDuplicates.pair(group, scores, matches)
           end,
         ]
       end
