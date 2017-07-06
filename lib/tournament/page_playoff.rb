@@ -10,6 +10,8 @@ module Tournament
     #
     # @param driver [Driver]
     # @option options [Integer] round the round to generate
+    # @option options [Boolean] bronze_match whether to generate a bronze match
+    #     on the final round.
     def generate(driver, options = {})
       teams = driver.ranked_teams
       raise 'Page Playoffs only works with 4 teams' if teams.length != 4

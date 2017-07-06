@@ -15,14 +15,20 @@ module Tournament
       # @return [Integer]
       # @raise [ArgumentError] when the number of matches doesn't add up
       def guess_round(matches_count)
-        case matches_count
-        when 0 then 0
-        when 2 then 1
-        when 3 then 2
-        else
-          raise ArgumentError, 'Invalid number of matches'
-        end
+        round = MATCH_ROUND_MAP[matches_count]
+
+        raise ArgumentError, 'Invalid number of matches' unless round
+
+        round
       end
+
+      private
+
+      MATCH_ROUND_MAP = {
+        0 => 0,
+        2 => 1,
+        3 => 2,
+      }.freeze
     end
   end
 end
