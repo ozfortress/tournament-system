@@ -4,21 +4,21 @@ module Tournament
   module Algorithm
     module Pairers
       # Complex pairing system that tries to maximise uniqueness and
-      # total point difference.
+      # total score difference.
       module BestMinDuplicates
         extend self
 
         # Pair by minimising the number of duplicate matches,
-        # then minimising the point difference.
+        # then minimising the score difference.
         #
         # @see Util.all_perfect_matches
         #
         # @param teams [Array<team>] the teams to pair
-        # @param points [Hash{team => Numer}] a mapping from teams to points
+        # @param scores [Hash{team => Numer}] a mapping from teams to scores
         # @param matches_counts [Hash{Set(team, team) => Integer}]
         #   A mapping from unique matches to their number of previous
         #   occurrences.
-        def pair(teams, points, matches_counts)
+        def pair(teams, scores, matches_counts)
           # enumerate all unique pairings using round robin
           perfect_matches = Util.all_perfect_matches(teams, 2)
 
@@ -27,9 +27,9 @@ module Tournament
             count_duplicate_matches(matches_counts, matches)
           end.min_by(&:first).last
 
-          # Pick the pairings with least total point difference
+          # Pick the pairings with least total score difference
           min_pairings = Util.all_min_by(min_pairings) do |matches|
-            point_difference(points, matches)
+            score_difference(scores, matches)
           end
 
           # Pick the last one as its usually the most diverse
@@ -42,10 +42,11 @@ module Tournament
           matches.map { |match| matches_counts[Set.new match] || 0 }.reduce(:+)
         end
 
-        def point_difference(points, matches)
-          point_h = Hash.new { |hash, key| hash[key] = points[key] || 0 }
+        def score_difference(scores, matches)
+          # Default to a score of 0
+          score_h = Hash.new { |hash, key| hash[key] = scores[key] || 0 }
 
-          matches.map { |match| (point_h[match[0]] - point_h[match[1]]).abs }
+          matches.map { |match| (score_h[match[0]] - score_h[match[1]]).abs }
                  .reduce(:+)
         end
       end
