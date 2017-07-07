@@ -7,6 +7,14 @@ module Tournament
       # The total number of rounds needed for all page playoff tournaments.
       TOTAL_ROUNDS = 3
 
+      # Mapping from number of matches to round number
+      MATCH_ROUND_MAP = {
+        0 => 0,
+        2 => 1,
+        3 => 2,
+      }.freeze
+      private_constant :MATCH_ROUND_MAP
+
       # :reek:ControlParameter
 
       # Guess the next round (starting at 0) for page playoff.
@@ -21,14 +29,6 @@ module Tournament
 
         round
       end
-
-      private
-
-      MATCH_ROUND_MAP = {
-        0 => 0,
-        2 => 1,
-        3 => 2,
-      }.freeze
     end
   end
 end
