@@ -13,50 +13,55 @@ describe Tournament::Algorithm::Swiss do
     it 'handles all scores being identical' do
       scores = Hash.new(0)
 
-      groups = described_class.group_teams_by_score([1], scores)
+      groups = described_class.group_teams_by_score([1].freeze, scores)
       expect(groups).to eq([[1]])
 
-      groups = described_class.group_teams_by_score([1, 2], scores)
+      groups = described_class.group_teams_by_score([1, 2].freeze, scores)
       expect(groups).to eq([[1, 2]])
 
-      groups = described_class.group_teams_by_score([1, 2, 3], scores)
+      groups = described_class.group_teams_by_score([1, 2, 3].freeze, scores)
       expect(groups).to eq([[1, 2, 3]])
 
-      groups = described_class.group_teams_by_score([1, 2, 3, 4], scores)
+      groups = described_class.group_teams_by_score([1, 2, 3, 4].freeze,
+                                                    scores)
       expect(groups).to eq([[1, 2, 3, 4]])
 
-      groups = described_class.group_teams_by_score([1, 2, 3, 4, 5], scores)
+      groups = described_class.group_teams_by_score([1, 2, 3, 4, 5].freeze,
+                                                    scores)
       expect(groups).to eq([[1, 2, 3, 4, 5]])
 
-      groups = described_class.group_teams_by_score([1, 2, 3, 4, 5, 6], scores)
+      groups = described_class.group_teams_by_score([1, 2, 3, 4, 5, 6].freeze,
+                                                    scores)
       expect(groups).to eq([[1, 2, 3, 4, 5, 6]])
     end
 
     it 'handles all scores being unique' do
-      scores = { 1 => 6, 2 => 5, 3 => 4, 4 => 3, 5 => 2, 6 => 1 }
+      scores = { 1 => 6, 2 => 5, 3 => 4, 4 => 3, 5 => 2, 6 => 1 }.freeze
 
-      groups = described_class.group_teams_by_score([1], scores)
+      groups = described_class.group_teams_by_score([1].freeze, scores)
       expect(groups).to eq([[1]])
 
-      groups = described_class.group_teams_by_score([1, 2], scores)
+      groups = described_class.group_teams_by_score([1, 2].freeze, scores)
       expect(groups).to eq([[1], [2]])
 
-      groups = described_class.group_teams_by_score([1, 2, 3], scores)
+      groups = described_class.group_teams_by_score([1, 2, 3].freeze, scores)
       expect(groups).to eq([[1], [2], [3]])
 
-      groups = described_class.group_teams_by_score([1, 2, 3, 4], scores)
+      groups = described_class.group_teams_by_score([1, 2, 3, 4].freeze, scores)
       expect(groups).to eq([[1], [2], [3], [4]])
     end
 
     it 'handles nil players' do
       scores = { 1 => 4, 2 => 4, 3 => 2 }
-      groups = described_class.group_teams_by_score([1, 2, 3, nil], scores)
+      groups = described_class.group_teams_by_score([1, 2, 3, nil].freeze,
+                                                    scores.freeze)
       expect(groups).to eq([[1, 2], [3], [nil]])
     end
 
     it 'sorts group by score' do
       scores = { 1 => 6, 2 => 6, 3 => 4, 4 => 8, 5 => 4, 6 => 2 }
-      groups = described_class.group_teams_by_score([1, 2, 3, 4, 5, 6], scores)
+      groups = described_class.group_teams_by_score([1, 2, 3, 4, 5, 6].freeze,
+                                                    scores.freeze)
       expect(groups).to eq([[4], [1, 2], [3, 5], [6]])
     end
   end

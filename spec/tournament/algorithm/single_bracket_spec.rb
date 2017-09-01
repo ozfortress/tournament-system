@@ -1,6 +1,10 @@
 require 'tournament/algorithm/single_bracket'
 
 describe Tournament::Algorithm::SingleBracket do
+  def gen_teams(num)
+    (1..num).to_a.freeze
+  end
+
   describe '#total_rounds' do
     it 'works for powers of 2' do
       expect(described_class.total_rounds(2)).to eq(1)
@@ -55,29 +59,29 @@ describe Tournament::Algorithm::SingleBracket do
 
   describe '#padd_teams' do
     it 'works' do
-      expect(described_class.padd_teams((1..2).to_a)).to eq([1, 2])
-      expect(described_class.padd_teams((1..3).to_a)).to eq([1, 2, 3, nil])
-      expect(described_class.padd_teams((1..4).to_a)).to eq([1, 2, 3, 4])
-      expect(described_class.padd_teams((1..5).to_a))
+      expect(described_class.padd_teams(gen_teams(2))).to eq([1, 2])
+      expect(described_class.padd_teams(gen_teams(3))).to eq([1, 2, 3, nil])
+      expect(described_class.padd_teams(gen_teams(4))).to eq([1, 2, 3, 4])
+      expect(described_class.padd_teams(gen_teams(5)))
         .to eq([1, 2, 3, 4, 5, nil, nil, nil])
-      expect(described_class.padd_teams((1..6).to_a))
+      expect(described_class.padd_teams(gen_teams(6)))
         .to eq([1, 2, 3, 4, 5, 6, nil, nil])
-      expect(described_class.padd_teams((1..7).to_a))
+      expect(described_class.padd_teams(gen_teams(7)))
         .to eq([1, 2, 3, 4, 5, 6, 7, nil])
-      expect(described_class.padd_teams((1..8).to_a))
+      expect(described_class.padd_teams(gen_teams(8)))
         .to eq([1, 2, 3, 4, 5, 6, 7, 8])
     end
   end
 
   describe '#seed' do
     it 'works for powers of 2' do
-      expect(described_class.seed([1, 2])).to eq([1, 2])
-      expect(described_class.seed([1, 2, 3, 4])).to eq([1, 4, 2, 3])
-      expect(described_class.seed([1, 2, 3, 4, 5, 6, 7, 8]))
+      expect(described_class.seed(gen_teams(2))).to eq([1, 2])
+      expect(described_class.seed(gen_teams(4))).to eq([1, 4, 2, 3])
+      expect(described_class.seed(gen_teams(8)))
         .to eq([1, 8, 4, 5, 2, 7, 3, 6])
-      expect(described_class.seed((1..16).to_a))
+      expect(described_class.seed(gen_teams(16)))
         .to eq([1, 16, 8, 9, 4, 13, 5, 12, 2, 15, 7, 10, 3, 14, 6, 11])
-      expect(described_class.seed((1..32).to_a)).to eq(
+      expect(described_class.seed(gen_teams(32))).to eq(
         [
           1, 32, 16, 17, 8, 25, 9, 24, 4, 29, 13, 20, 5, 28, 12, 21,
           2, 31, 15, 18, 7, 26, 10, 23, 3, 30, 14, 19, 6, 27, 11, 22
@@ -86,15 +90,15 @@ describe Tournament::Algorithm::SingleBracket do
     end
 
     it 'handles byes' do
-      teams = [1, 2, 3, 4, 5, 6, nil, nil]
+      teams = [1, 2, 3, 4, 5, 6, nil, nil].freeze
       result = described_class.seed(teams)
       expect(result).to eq([1, nil, 4, 5, 2, nil, 3, 6])
     end
 
     it 'fails for non-power of 2 teams' do
-      expect { described_class.seed((1..3).to_a) }.to raise_error ArgumentError
-      expect { described_class.seed((1..5).to_a) }.to raise_error ArgumentError
-      expect { described_class.seed((1..6).to_a) }.to raise_error ArgumentError
+      expect { described_class.seed(gen_teams(3)) }.to raise_error ArgumentError
+      expect { described_class.seed(gen_teams(5)) }.to raise_error ArgumentError
+      expect { described_class.seed(gen_teams(6)) }.to raise_error ArgumentError
     end
   end
 end

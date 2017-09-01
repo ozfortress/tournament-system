@@ -47,13 +47,16 @@ describe Tournament::Swiss::Dutch do
 
     context 'full tournament' do
       it 'works for 16 teams' do
-        teams = (1..16).to_a
-        scores = Hash.new(0)
+        teams = (1..16).to_a.freeze
+        scores = teams.map { |t| [t, 0] }.to_h
 
         matches = []
 
         6.times do
-          ranked_teams = teams.sort_by.with_index { |t, i| [-scores[t], i] }
+          ranked_teams = teams.sort_by
+                              .with_index { |t, i| [-scores[t], i] }
+                              .freeze
+
           driver = TestDriver.new(ranked_teams: ranked_teams, scores: scores,
                                   matches: matches)
 
@@ -84,13 +87,16 @@ describe Tournament::Swiss::Dutch do
       end
 
       it 'works for 15 teams' do
-        teams = (1..15).to_a
-        scores = Hash.new(0)
+        teams = (1..15).to_a.freeze
+        scores = teams.map { |t| [t, 0] }.to_h
 
         matches = []
 
         6.times do
-          ranked_teams = teams.sort_by.with_index { |t, i| [-scores[t], i] }
+          ranked_teams = teams.sort_by
+                              .with_index { |t, i| [-scores[t], i] }
+                              .freeze
+
           driver = TestDriver.new(ranked_teams: ranked_teams, scores: scores,
                                   matches: matches)
 
@@ -129,15 +135,15 @@ describe Tournament::Swiss::Dutch do
     end
 
     it 'minimises duplicate matches' do
-      teams = [1, 2, 3]
+      teams = [1, 2, 3].freeze
       matches = [
         [1, 2], [3, nil],
         [1, 3], [2, nil],
         [2, 3], [1, nil],
         [1, 2], [3, nil],
         [1, 3], [2, nil],
-      ]
-      scores = { 1 => 1, 2 => 2, 3 => 3 }
+      ].freeze
+      scores = { 1 => 1, 2 => 2, 3 => 3 }.freeze
       driver = TestDriver.new(teams: teams, matches: matches, scores: scores)
 
       created_matches = described_class.pair driver, min_pair_size: 4
@@ -150,9 +156,9 @@ describe Tournament::Swiss::Dutch do
     end
 
     it 'handles no minimum sized groups' do
-      teams = [1, 2, 3, 4]
-      matches = [[1, 2], [3, 4], [2, 3], [1, 4], [1, 3], [2, 4]]
-      scores = { 1 => 1, 2 => 2, 3 => 3, 4 => 4 }
+      teams = [1, 2, 3, 4].freeze
+      matches = [[1, 2], [3, 4], [2, 3], [1, 4], [1, 3], [2, 4]].freeze
+      scores = { 1 => 1, 2 => 2, 3 => 3, 4 => 4 }.freeze
       driver = TestDriver.new(teams: teams, matches: matches, scores: scores)
 
       created_matches = described_class.pair driver, min_pair_size: 4
@@ -166,9 +172,9 @@ describe Tournament::Swiss::Dutch do
     end
 
     it 'handles no minimum sized groups with byes' do
-      teams = [1, 2, 3]
-      matches = [[1, 2], [3, nil], [2, 3], [1, nil], [1, 3], [2, nil]]
-      scores = { 1 => 1, 2 => 2, 3 => 3 }
+      teams = [1, 2, 3].freeze
+      matches = [[1, 2], [3, nil], [2, 3], [1, nil], [1, 3], [2, nil]].freeze
+      scores = { 1 => 1, 2 => 2, 3 => 3 }.freeze
       driver = TestDriver.new(teams: teams, matches: matches, scores: scores)
 
       created_matches = described_class.pair driver, min_pair_size: 4
