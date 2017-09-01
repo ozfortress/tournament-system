@@ -16,7 +16,7 @@ module Tournament
       #     {Algorithm::Swiss#merge_small_groups for more details}
       # @return [Array<Array(team, team)>] the generated pairs of teams
       def pair(driver, options = {})
-        teams = driver.ranked_teams
+        teams = driver.ranked_teams.dup
 
         # Special padding such that the bottom team gets a BYE
         teams.insert(teams.length / 2, nil) if teams.length.odd?
