@@ -74,7 +74,7 @@ module Tournament
 
         state.matches = state.driver.matches_hash
 
-        state.score_range = state.scores.keys.max - state.scores.keys.min
+        state.score_range = state.scores.values.max - state.scores.values.min
         state.average_score_difference = state.score_range / teams.length.to_f
 
         state.team_index_map = teams.map.with_index.to_h
