@@ -10,7 +10,7 @@ module Tournament
     #
     # @param driver [Driver]
     # @option options [Integer] round the round to generate
-    # @return [void]
+    # @return [nil]
     def generate(driver, options = {})
       round = options[:round] || guess_round(driver)
 

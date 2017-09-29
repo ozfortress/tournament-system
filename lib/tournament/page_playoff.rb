@@ -1,5 +1,5 @@
 require 'tournament/algorithm/page_playoff'
-require 'tournament/algorithm/pairers/adjacent'
+require 'tournament/algorithm/group_pairing'
 
 module Tournament
   # Implements the page playoff system.
@@ -46,7 +46,7 @@ module Tournament
     private
 
     def semi_finals(driver, teams)
-      driver.create_matches Algorithm::Pairers::Adjacent.pair(teams)
+      driver.create_matches Algorithm::GroupPairing.adjacent(teams)
     end
 
     def preliminary_finals(driver)

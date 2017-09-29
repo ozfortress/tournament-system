@@ -66,7 +66,7 @@ module Tournament
       # ones, the first team plays the second in the finals, the 3rd and 4th get
       # nocked out in the semi-finals, etc.
       #
-      # Designed to be used with {Pairers::Adjacent}.
+      # Designed to be used with {GroupPairing#adjacent}.
       #
       # @param teams [Array<Team>]
       # @return [Array<team>]

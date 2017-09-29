@@ -1,5 +1,5 @@
 require 'tournament/algorithm/util'
-require 'tournament/algorithm/pairers/halves'
+require 'tournament/algorithm/group_pairing'
 
 module Tournament
   module Algorithm
@@ -45,7 +45,7 @@ module Tournament
 
       # Rotates teams and pairs them for a round of round robin.
       #
-      # Uses {Pairers::Halves} for pairing after rotating.
+      # Uses {GroupPairing#fold} for pairing after rotating.
       #
       # @param teams [Array<team>] teams playing
       # @param round [Integer] the round number
@@ -53,7 +53,7 @@ module Tournament
       def round_robin_pairing(teams, round)
         rotated = round_robin(teams, round)
 
-        Pairers::Halves.pair(rotated, bottom_reversed: true)
+        GroupPairing.fold(rotated)
       end
     end
   end

@@ -23,5 +23,6 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_runtime_dependency 'graph_matching', '~> 0.1.1'
   spec.add_development_dependency 'bundler', '~> 1.14'
 end

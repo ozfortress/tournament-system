@@ -2,6 +2,9 @@ AllCops:
   DisplayCopNames: true
   TargetRubyVersion: 2.3
 
+Metrics/LineLength:
+  Max: 120
+
 # This is fine, really
 Style/FileName:
   Enabled: false

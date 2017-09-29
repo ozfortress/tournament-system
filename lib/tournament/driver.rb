@@ -21,29 +21,28 @@ module Tournament
     # rubocop:disable Lint/UnusedMethodArgument
     # :nocov:
 
-    # Get all matches. Required to implement.
+    # Required to implement: Get all matches.
     #
     # @return [Array<match>]
     def matches
       raise 'Not Implemented'
     end
 
-    # Get the teams with their initial seedings. Required to implement.
+    # Required to implement: Get the teams with their initial seedings.
     #
     # @return [Array<team>]
     def seeded_teams
       raise 'Not Implemented'
     end
 
-    # Get the teams ranked by their current position in the tournament.
-    # Required to implement.
+    # Required to implement: Get the teams ranked by their current position in the tournament.
     #
     # @return [Array<team>]
     def ranked_teams
       raise 'Not Implemented'
     end
 
-    # Get the winning team of a match. Required to implement.
+    # Required to implement: Get the winning team of a match.
     #
     # @param match [] a match, eg. one returned by {#matches}
     # @return [team, nil] the winner of the match if applicable
@@ -51,7 +50,7 @@ module Tournament
       raise 'Not Implemented'
     end
 
-    # Get the pair of teams playing for a match. Required to implement.
+    # Required to implement: Get the pair of teams playing for a match.
     #
     # @param match [] a match, eg. one returned by {#matches}
     # @return [Array(team, team)] the pair of teams playing in the match
@@ -59,7 +58,7 @@ module Tournament
       raise 'Not Implemented'
     end
 
-    # Get a specific score for a team. Required to implement.
+    # Required to implement: Get a specific score for a team.
     #
     # @param team [] a team, eg. one returned by {#seeded_teams}
     # @return [Number] the score of the team
@@ -67,8 +66,7 @@ module Tournament
       raise 'Not Implemented'
     end
 
-    # Called when a match is created by a tournament system. Required to
-    # implement.
+    # Required to implement: Called when a match is created by a tournament system.
     #
     # @example rails
     #   def build_match(home_team, away_team)
@@ -78,7 +76,7 @@ module Tournament
     # @param home_team [team] the home team for the match, never +nil+
     # @param away_team [team, nil] the away team for the match, may be +nil+ for
     #     byes.
-    # @return [void]
+    # @return [nil]
     def build_match(home_team, away_team)
       raise 'Not Implemented'
     end
@@ -86,9 +84,8 @@ module Tournament
     # :nocov:
     # rubocop:enable Lint/UnusedMethodArgument
 
-    # Get the losing team of a specific match. By default uses
-    # {#get_match_winner} and {#get_match_teams} to determine which team lost.
-    # Override if you have better access to this information.
+    # Get the losing team of a specific match. By default uses {#get_match_winner} and {#get_match_teams} to determine
+    # which team lost. Override if you have better access to this information.
     #
     # @return [team, nil] the lower of the match, if applicable
     def get_match_loser(match)
@@ -98,16 +95,14 @@ module Tournament
       get_match_teams(match).reject { |team| team == winner }.first
     end
 
-    # Get a hash of unique team pairs and their number of occurences. Used by
-    # tournament systems.
+    # Get a hash of unique team pairs and their number of occurences. Used by tournament systems.
     #
     # @return [Hash{Set(team, team) => Integer}]
     def matches_hash
       @matches_hash ||= build_matches_hash
     end
 
-    # Count the number of times each pair of teams has played already. Used by
-    # tournament systems.
+    # Count the number of times each pair of teams has played already. Used by tournament systems.
     #
     # @param matches [Array<match>]
     # @return [Integer] the number of duplicate matches
@@ -121,7 +116,7 @@ module Tournament
     #
     # @param home_team [team, nil]
     # @param away_team [team, nil]
-    # @return [void]
+    # @return [nil]
     # @raise when both teams are +nil+
     def create_match(home_team, away_team)
       home_team, away_team = away_team, home_team unless home_team
@@ -134,7 +129,7 @@ module Tournament
     # @see #create_match
     #
     # @param matches [Array<Array(team, team)>] a collection of pairs
-    # @return [void]
+    # @return [nil]
     def create_matches(matches)
       matches.each do |home_team, away_team|
         create_match(home_team, away_team)

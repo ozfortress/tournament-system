@@ -11,3 +11,6 @@ TooManyStatements:
 # Reek isn't good at detecting these, especially with state and blocks
 DuplicateMethodCall:
   max_calls: 2
+
+NestedIterators:
+  max_allowed_nesting: 2

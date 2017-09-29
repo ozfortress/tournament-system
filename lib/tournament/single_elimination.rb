@@ -1,5 +1,5 @@
 require 'tournament/algorithm/single_bracket'
-require 'tournament/algorithm/pairers/adjacent'
+require 'tournament/algorithm/group_pairing'
 
 module Tournament
   # Implements the single bracket elimination tournament system.
@@ -9,7 +9,7 @@ module Tournament
     # Generate matches with the given driver
     #
     # @param driver [Driver]
-    # @return [void]
+    # @return [nil]
     def generate(driver, _options = {})
       round = guess_round(driver)
 
@@ -21,7 +21,7 @@ module Tournament
                 get_match_winners driver, last_matches
               end
 
-      driver.create_matches Algorithm::Pairers::Adjacent.pair(teams)
+      driver.create_matches Algorithm::GroupPairing.adjacent(teams)
     end
 
     # The total number of rounds needed for a single elimination tournament with

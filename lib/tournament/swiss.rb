@@ -13,7 +13,7 @@ module Tournament
     #                                 {Dutch}
     # @option options [Hash] pair_options options for the chosen pairing system,
     #                                     see {Dutch} for more details
-    # @return [void]
+    # @return [nil]
     def generate(driver, options = {})
       pairer = options[:pairer] || Dutch
       pairer_options = options[:pair_options] || {}
@@ -23,7 +23,7 @@ module Tournament
       driver.create_matches(pairings)
     end
 
-    # The minimum number of rounds to determine a winner.
+    # The minimum number of rounds to determine a number of winners.
     #
     # @param driver [Driver]
     # @return [Integer]

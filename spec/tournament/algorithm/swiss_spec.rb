@@ -9,6 +9,7 @@ describe Tournament::Algorithm::Swiss do
       expect(described_class.minimum_rounds(9)).to eq(4)
     end
   end
+
   describe '#group_teams_by_score' do
     it 'handles all scores being identical' do
       scores = Hash.new(0)
@@ -63,60 +64,6 @@ describe Tournament::Algorithm::Swiss do
       groups = described_class.group_teams_by_score([1, 2, 3, 4, 5, 6].freeze,
                                                     scores.freeze)
       expect(groups).to eq([[4], [1, 2], [3, 5], [6]])
-    end
-  end
-
-  describe '#merge_small_groups' do
-    it 'works for one large group' do
-      groups = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
-
-      described_class.merge_small_groups(groups, 4)
-
-      expect(groups).to eq([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]])
-    end
-
-    it 'works for many small groups' do
-      groups = [[1, 2, 3], [4, 5], [6, 7], [8, 9],
-                [10, 11], [12, 13, 14], [15, 16]]
-
-      described_class.merge_small_groups(groups, 4)
-
-      expect(groups).to eq([[1, 2, 3, 4, 5], [6, 7, 8, 9],
-                            [10, 11, 12, 13, 14, 15, 16]])
-    end
-
-    it 'works for large min_size' do
-      groups = [[1, 2, 3], [4, 5], [6, 7], [8, 9],
-                [10, 11], [12, 13, 14], [15, 16]]
-
-      described_class.merge_small_groups(groups, 8)
-
-      expect(groups).to eq([[1, 2, 3, 4, 5, 6, 7, 8,
-                             9, 10, 11, 12, 13, 14, 15, 16]])
-    end
-
-    it 'works for exactly min_size teams' do
-      groups = [[1], [2], [3, 4], [5], [6, 7], [8]]
-
-      described_class.merge_small_groups(groups, 8)
-
-      expect(groups).to eq([[1, 2, 3, 4, 5, 6, 7, 8]])
-    end
-
-    it 'works for too few teams for min_size' do
-      groups = [[1, 2], [3, 4], [5, 6, 7]]
-
-      described_class.merge_small_groups(groups, 8)
-
-      expect(groups).to eq([[1, 2, 3, 4, 5, 6, 7]])
-    end
-
-    it 'handles nil players' do
-      groups = [[1, 2], [3, 4], [5, 6, 7], [nil]]
-
-      described_class.merge_small_groups(groups, 4)
-
-      expect(groups).to eq([[1, 2, 3, 4], [5, 6, 7, nil]])
     end
   end
 

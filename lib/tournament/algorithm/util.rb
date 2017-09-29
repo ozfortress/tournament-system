@@ -54,47 +54,6 @@ module Tournament
         min_elements
       end
       # rubocop:enable Metrics/MethodLength
-
-      # rubocop:disable Metrics/MethodLength
-      # :reek:NestedIterators
-
-      # Iterate all perfect matches of a specific size.
-      # A perfect matching is a unique grouping of all elements with a specific
-      # group size. For example +[[1, 2], [3, 4]]+ is a perfect match of
-      # +[1, 2, 3, 4]+ with group size of +2+.
-      #
-      # This is useful for example when a pairing algorithm needs to iterate all
-      # possible pairings of teams to determine which is the best.
-      #
-      # Warning, this currently only works for +size = 2+.
-      #
-      # @param array [Array<element>]
-      # @param size [Integer] the size of groups
-      # @overload all_perfect_matches(array, size)
-      #   @return [Enumerator<Array<element>>] enumerator for all perfect
-      #                                        matches
-      # @overload all_perfect_matches(array, size) { |group| ... }
-      #   @yieldparam group [Array(element, size)] a group of elements
-      #   @return [void]
-      def all_perfect_matches(array, size)
-        size = 2
-        return to_enum(:all_perfect_matches, array, size) unless block_given?
-
-        if array.empty?
-          yield []
-          return
-        end
-
-        array[1..-1].combination(size - 1) do |group|
-          group.unshift array[0]
-
-          remaining = array.reject { |element| group.include?(element) }
-          all_perfect_matches(remaining, size) do |groups|
-            yield [group] + groups
-          end
-        end
-      end
-      # rubbocop:enable Metrics/MethodLength
     end
   end
 end

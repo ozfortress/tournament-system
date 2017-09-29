@@ -52,7 +52,9 @@ describe Tournament::Swiss::Dutch do
 
         matches = []
 
-        6.times do
+        round_count = 15
+        match_count_per_round = Tournament::Algorithm::Util.padded_teams_count(teams.length) / 2
+        round_count.times do
           ranked_teams = teams.sort_by
                               .with_index { |t, i| [-scores[t], i] }
                               .freeze
@@ -60,7 +62,8 @@ describe Tournament::Swiss::Dutch do
           driver = TestDriver.new(ranked_teams: ranked_teams, scores: scores,
                                   matches: matches)
 
-          created_matches = described_class.pair driver, min_pair_size: 4
+          created_matches = described_class.pair driver
+          expect(created_matches.length).to eq(match_count_per_round)
           matches += created_matches
 
           created_matches.each do |match|
@@ -69,7 +72,7 @@ describe Tournament::Swiss::Dutch do
           end
         end
 
-        expect(matches.length).to eq(48)
+        expect(matches.length).to eq(round_count * match_count_per_round)
         teams.each do |team1|
           teams.each do |team2|
             next if team1 == team2
@@ -82,7 +85,7 @@ describe Tournament::Swiss::Dutch do
           matches_played = matches.count do |match|
             match.include?(team1)
           end
-          expect(matches_played).to eq(6)
+          expect(matches_played).to eq(round_count)
         end
       end
 
@@ -92,7 +95,9 @@ describe Tournament::Swiss::Dutch do
 
         matches = []
 
-        6.times do
+        round_count = 15
+        match_count_per_round = Tournament::Algorithm::Util.padded_teams_count(teams.length) / 2
+        round_count.times do
           ranked_teams = teams.sort_by
                               .with_index { |t, i| [-scores[t], i] }
                               .freeze
@@ -100,7 +105,8 @@ describe Tournament::Swiss::Dutch do
           driver = TestDriver.new(ranked_teams: ranked_teams, scores: scores,
                                   matches: matches)
 
-          created_matches = described_class.pair driver, min_pair_size: 4
+          created_matches = described_class.pair driver
+          expect(created_matches.length).to eq(match_count_per_round)
           matches += created_matches
 
           created_matches.each do |match|
@@ -114,7 +120,7 @@ describe Tournament::Swiss::Dutch do
           end
         end
 
-        expect(matches.length).to eq(48)
+        expect(matches.length).to eq(round_count * match_count_per_round)
         teams.each do |team1|
           teams.each do |team2|
             next if team1 == team2
@@ -127,7 +133,7 @@ describe Tournament::Swiss::Dutch do
           matches_played = matches.select do |match|
             match.include?(team1)
           end
-          expect(matches_played.length).to be == 6
+          expect(matches_played.length).to be == round_count
           byes = matches_played.select { |match| match[1].nil? }
           expect(byes.length).to be <= 1
         end
@@ -146,13 +152,13 @@ describe Tournament::Swiss::Dutch do
       scores = { 1 => 1, 2 => 2, 3 => 3 }.freeze
       driver = TestDriver.new(teams: teams, matches: matches, scores: scores)
 
-      created_matches = described_class.pair driver, min_pair_size: 4
+      created_matches = described_class.pair driver
 
       match1, match2 = created_matches
-      expect(match1[0]).to eq(3)
-      expect(match1[1]).to eq(2)
-      expect(match2[0]).to eq(1)
-      expect(match2[1]).to be(nil)
+      expect(match1[0]).to eq(nil)
+      expect(match1[1]).to eq(1)
+      expect(match2[0]).to eq(3)
+      expect(match2[1]).to be(2)
     end
 
     it 'handles no minimum sized groups' do
@@ -161,13 +167,13 @@ describe Tournament::Swiss::Dutch do
       scores = { 1 => 1, 2 => 2, 3 => 3, 4 => 4 }.freeze
       driver = TestDriver.new(teams: teams, matches: matches, scores: scores)
 
-      created_matches = described_class.pair driver, min_pair_size: 4
+      created_matches = described_class.pair driver
       expect(created_matches.length).to eq(2)
 
-      created_matches = described_class.pair driver, min_pair_size: 2
+      created_matches = described_class.pair driver
       expect(created_matches.length).to eq(2)
 
-      created_matches = described_class.pair driver, min_pair_size: 1
+      created_matches = described_class.pair driver
       expect(created_matches.length).to eq(2)
     end
 
@@ -177,13 +183,13 @@ describe Tournament::Swiss::Dutch do
       scores = { 1 => 1, 2 => 2, 3 => 3 }.freeze
       driver = TestDriver.new(teams: teams, matches: matches, scores: scores)
 
-      created_matches = described_class.pair driver, min_pair_size: 4
+      created_matches = described_class.pair driver
       expect(created_matches.length).to eq(2)
 
-      created_matches = described_class.pair driver, min_pair_size: 2
+      created_matches = described_class.pair driver
       expect(created_matches.length).to eq(2)
 
-      created_matches = described_class.pair driver, min_pair_size: 1
+      created_matches = described_class.pair driver
       expect(created_matches.length).to eq(2)
     end
   end

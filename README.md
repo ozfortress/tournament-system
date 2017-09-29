@@ -78,10 +78,10 @@ Tournament::SingleElimination.generate driver
 # Generate a round for a round robin tournament
 Tournament::RoundRobin.generate driver
 
-# Generate a round for a swiss system tournament
-# with Dutch pairings (default) with a minimum pair size of 6 (default 4)
+# Generate a round for a swiss system tournament, pushing byes to the bottom
+#  half (bottom half teams will bye before the top half)
 Tournament::Swiss.generate driver, pairer: Tournament::Swiss::Dutch,
-                                   pair_options: { min_pair_size: 6 }
+                                   pair_options: { push_byes_to: :bottom_half }
 
 # Generate a round for a page playoff system, with an optional bronze match
 Tournament::PagePlayoff.generate driver, bronze_match: true

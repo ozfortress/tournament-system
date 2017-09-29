@@ -1,5 +1,3 @@
-require 'tournament/algorithm/single_bracket'
-
 describe Tournament::Algorithm::SingleBracket do
   def gen_teams(num)
     (1..num).to_a.freeze
