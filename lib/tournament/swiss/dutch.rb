@@ -100,8 +100,8 @@ module Tournament
         if match_set.include?(nil) && push_byes_to != :none
           index = state.team_index_map[home_team || away_team]
 
-          if (push_byes_to == :bottom_half && index > state.teams.length / 2) ||
-             (push_byes_to == :top_half && index < state.teams.length / 2)
+          if (push_byes_to == :bottom_half && index < state.teams.length / 2) ||
+             (push_byes_to == :top_half && index > state.teams.length / 2)
             cost += state.score_range
           end
         end
