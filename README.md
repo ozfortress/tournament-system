@@ -14,7 +14,7 @@ It is designed to easily fit into any memory model you might already have.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'tournament-system'
+gem 'tournament-system', '~> 1.0.0'
 ```
 
 And then execute:

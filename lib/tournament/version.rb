@@ -1,4 +1,4 @@
 module Tournament
   # The current version of this gem.
-  VERSION = '0.2.1'.freeze
+  VERSION = '1.0.0'.freeze
 end
