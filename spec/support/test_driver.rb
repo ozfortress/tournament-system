@@ -2,7 +2,7 @@ require 'ostruct'
 
 require 'tournament-system'
 
-class TestDriver < Tournament::Driver
+class TestDriver < TournamentSystem::Driver
   def initialize(options = {})
     @teams = options[:teams] || []
     @ranked_teams = options[:ranked_teams] || @teams

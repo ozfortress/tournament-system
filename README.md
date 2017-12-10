@@ -35,7 +35,7 @@ First you need to implement a driver to handle the interface between your data
 and the tournament systems:
 
 ```ruby
-class Driver < Tournament::Driver
+class Driver < TournamentSystem::Driver
   def matches
     ...
   end
@@ -73,18 +73,18 @@ instance:
 driver = Driver.new
 
 # Generate a round of a single elimination tournament
-Tournament::SingleElimination.generate driver
+TournamentSystem::SingleElimination.generate driver
 
 # Generate a round for a round robin tournament
-Tournament::RoundRobin.generate driver
+TournamentSystem::RoundRobin.generate driver
 
 # Generate a round for a swiss system tournament, pushing byes to the bottom
 #  half (bottom half teams will bye before the top half)
-Tournament::Swiss.generate driver, pairer: Tournament::Swiss::Dutch,
+TournamentSystem::Swiss.generate driver, pairer: TournamentSystem::Swiss::Dutch,
                                    pair_options: { push_byes_to: :bottom_half }
 
 # Generate a round for a page playoff system, with an optional bronze match
-Tournament::PagePlayoff.generate driver, bronze_match: true
+TournamentSystem::PagePlayoff.generate driver, bronze_match: true
 ```
 
 ## Contributing

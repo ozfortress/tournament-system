@@ -2,11 +2,11 @@
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'tournament/version'
+require 'tournament-system/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'tournament-system'
-  spec.version       = Tournament::VERSION
+  spec.version       = TournamentSystem::VERSION
   spec.authors       = ['Benjamin Schaaf']
   spec.email         = ['ben.schaaf@gmail.com']
 
