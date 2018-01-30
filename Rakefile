@@ -9,5 +9,5 @@ RuboCop::RakeTask.new
 Reek::Rake::Task.new
 
 task default: :test
-task test: %w(rspec lint)
-task lint: %w(rubocop reek)
+task test: %w[rspec lint]
+task lint: %w[rubocop reek]

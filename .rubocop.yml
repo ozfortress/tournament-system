@@ -6,7 +6,7 @@ Metrics/LineLength:
   Max: 120
 
 # This is fine, really
-Style/FileName:
+Naming/FileName:
   Enabled: false
 
 # 'old' style

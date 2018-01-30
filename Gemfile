@@ -12,7 +12,7 @@ gem 'rspec'
 gem 'simplecov'
 
 # Linting
-gem 'rubocop', '~> 0.47.1'
+gem 'rubocop', '~> 0.52.1'
 gem 'reek'
 
 group :test do

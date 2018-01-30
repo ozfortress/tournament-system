@@ -36,15 +36,11 @@ module Tournament
         total_teams = max_teams(rounds)
 
         # Make sure we don't have too many matches
-        unless total_teams >= matches_count
-          raise ArgumentError, 'Too many matches'
-        end
+        raise ArgumentError, 'Too many matches' unless total_teams >= matches_count
 
         round = rounds - Math.log2(total_teams - matches_count)
-        unless (round % 1).zero?
-          # Make sure we don't have some weird number of matches
-          raise ArgumentError, 'Invalid number of matches'
-        end
+        # Make sure we don't have some weird number of matches
+        raise ArgumentError, 'Invalid number of matches' unless (round % 1).zero?
 
         round.to_i
       end
@@ -72,9 +68,7 @@ module Tournament
       # @return [Array<team>]
       # @raise [ArgumentError] when the number of teams is not a power of 2
       def seed(teams)
-        unless (Math.log2(teams.length) % 1).zero?
-          raise ArgumentError, 'Need power-of-2 teams'
-        end
+        raise ArgumentError, 'Need power-of-2 teams' unless (Math.log2(teams.length) % 1).zero?
 
         teams = teams.map.with_index do |team, index|
           OpenStruct.new(team: team, index: index)

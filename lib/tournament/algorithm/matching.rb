@@ -41,7 +41,7 @@ module Tournament
           end
         end
       end
-      # rubbocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/MethodLength
 
       # Performs maximum weight perfect matching of a undirected complete graph composed of the given vertices.
       #
