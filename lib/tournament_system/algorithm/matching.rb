@@ -1,6 +1,6 @@
 require 'graph_matching'
 
-module Tournament
+module TournamentSystem
   module Algorithm
     # Implements graph matching algorithms for tournament systems.
     module Matching

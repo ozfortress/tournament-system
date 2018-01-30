@@ -1,4 +1,4 @@
-describe Tournament::Algorithm::PagePlayoff do
+describe TournamentSystem::Algorithm::PagePlayoff do
   describe '#guess_round' do
     it 'works for valid input' do
       expect(described_class.guess_round(0)).to eq(0)

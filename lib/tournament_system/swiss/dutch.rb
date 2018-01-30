@@ -1,10 +1,10 @@
 require 'ostruct'
 
-require 'tournament/algorithm/swiss'
-require 'tournament/algorithm/matching'
-require 'tournament/algorithm/group_pairing'
+require 'tournament_system/algorithm/swiss'
+require 'tournament_system/algorithm/matching'
+require 'tournament_system/algorithm/group_pairing'
 
-module Tournament
+module TournamentSystem
   module Swiss
     # A Dutch pairing system implementation.
     module Dutch
@@ -12,9 +12,10 @@ module Tournament
 
       # Pair teams using dutch pairing for a swiss system tournament.
       #
-      # Teams are initially grouped by their score and then slide paired ({Tournament::Algorithm::GroupPairing.slide}).
-      # If that fails to produce unique matches it will match teams by the minimum score difference, aniling duplicate
-      # matches (default) and optionally pushing byes to a certain side.
+      # Teams are initially grouped by their score and then slide paired
+      # ({TournamentSystem::Algorithm::GroupPairing.slide}). If that fails to produce unique matches it will match teams
+      # by the minimum score difference, aniling duplicate matches (default) and optionally pushing byes to a certain
+      # side.
       #
       # @param driver [Driver]
       # @option options [Boolean] allow_duplicates removes the penalty of duplicate matches from the pairing algorithm

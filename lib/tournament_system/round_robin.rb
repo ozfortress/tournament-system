@@ -1,7 +1,7 @@
-require 'tournament/algorithm/util'
-require 'tournament/algorithm/round_robin'
+require 'tournament_system/algorithm/util'
+require 'tournament_system/algorithm/round_robin'
 
-module Tournament
+module TournamentSystem
   # Implements the round-robin tournament system.
   module RoundRobin
     extend self

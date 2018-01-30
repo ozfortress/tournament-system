@@ -1,4 +1,4 @@
-describe Tournament::PagePlayoff do
+describe TournamentSystem::PagePlayoff do
   describe '#total_rounds' do
     it 'returns 3' do
       expect(described_class.total_rounds).to eq(3)
@@ -10,7 +10,7 @@ describe Tournament::PagePlayoff do
       driver = instance_double('Driver')
       expect(driver).to receive(:matches) { [1, 2] }
 
-      expect(Tournament::Algorithm::PagePlayoff)
+      expect(TournamentSystem::Algorithm::PagePlayoff)
         .to receive(:guess_round)
           .with(2) { 11 }
 

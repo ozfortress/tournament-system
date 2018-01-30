@@ -1,7 +1,7 @@
-require 'tournament/algorithm/util'
-require 'tournament/algorithm/group_pairing'
+require 'tournament_system/algorithm/util'
+require 'tournament_system/algorithm/group_pairing'
 
-module Tournament
+module TournamentSystem
   module Algorithm
     # This module provides algorithms for dealing with round robin tournament
     # systems.

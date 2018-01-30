@@ -1,7 +1,7 @@
-require 'tournament/algorithm/single_bracket'
-require 'tournament/algorithm/group_pairing'
+require 'tournament_system/algorithm/single_bracket'
+require 'tournament_system/algorithm/group_pairing'
 
-module Tournament
+module TournamentSystem
   # Implements the single bracket elimination tournament system.
   module SingleElimination
     extend self

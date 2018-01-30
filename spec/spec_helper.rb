@@ -8,7 +8,7 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new [
 SimpleCov.minimum_coverage 98
 SimpleCov.start
 
-require 'tournament-system'
+require 'tournament_system'
 require 'support/test_driver'
 
 RSpec.configure do |config|

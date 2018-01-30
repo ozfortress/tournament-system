@@ -1,4 +1,4 @@
-describe Tournament::Algorithm::GroupPairing do
+describe TournamentSystem::Algorithm::GroupPairing do
   def gen_teams(num)
     (1..num).to_a.freeze
   end

@@ -1,6 +1,6 @@
 require 'ostruct'
 
-module Tournament
+module TournamentSystem
   module Algorithm
     # This module provides algorithms for dealing with single bracket
     # elimination tournament systems.

@@ -1,4 +1,4 @@
-module Tournament
+module TournamentSystem
   module Algorithm
     # This module provides algorithms for dealing with swiss tournament systems. Specifically it provides algorithms for
     # grouping teams.

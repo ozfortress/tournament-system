@@ -1,6 +1,6 @@
-require 'tournament/algorithm/swiss'
+require 'tournament_system/algorithm/swiss'
 
-describe Tournament::Algorithm::Swiss do
+describe TournamentSystem::Algorithm::Swiss do
   describe '#minimum_rounds' do
     it 'works' do
       expect(described_class.minimum_rounds(2)).to eq(1)

@@ -1,10 +1,10 @@
-describe Tournament::RoundRobin do
+describe TournamentSystem::RoundRobin do
   describe '#total_rounds' do
     it 'calls Algorithm::RoundRobin#total_rounds' do
       driver = instance_double('Driver')
       expect(driver).to receive(:seeded_teams) { [1, 2] }
 
-      expect(Tournament::Algorithm::RoundRobin)
+      expect(TournamentSystem::Algorithm::RoundRobin)
         .to receive(:total_rounds)
           .with(2) { 11 }
 
@@ -18,7 +18,7 @@ describe Tournament::RoundRobin do
       expect(driver).to receive(:seeded_teams) { [1, 2, 3, 4] }
       expect(driver).to receive(:matches) { [1, 2] }
 
-      expect(Tournament::Algorithm::RoundRobin)
+      expect(TournamentSystem::Algorithm::RoundRobin)
         .to receive(:guess_round)
           .with(4, 2) { 11 }
 

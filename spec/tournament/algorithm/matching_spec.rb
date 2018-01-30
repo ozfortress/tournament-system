@@ -1,4 +1,4 @@
-describe Tournament::Algorithm::Matching do
+describe TournamentSystem::Algorithm::Matching do
   def gen_teams(num)
     (1..num).to_a.freeze
   end

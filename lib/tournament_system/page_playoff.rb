@@ -1,7 +1,7 @@
-require 'tournament/algorithm/page_playoff'
-require 'tournament/algorithm/group_pairing'
+require 'tournament_system/algorithm/page_playoff'
+require 'tournament_system/algorithm/group_pairing'
 
-module Tournament
+module TournamentSystem
   # Implements the page playoff system.
   module PagePlayoff
     extend self

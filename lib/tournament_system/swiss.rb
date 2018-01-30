@@ -1,8 +1,8 @@
-require 'tournament/algorithm/swiss'
-require 'tournament/swiss/dutch'
-require 'tournament/swiss/accelerated_dutch'
+require 'tournament_system/algorithm/swiss'
+require 'tournament_system/swiss/dutch'
+require 'tournament_system/swiss/accelerated_dutch'
 
-module Tournament
+module TournamentSystem
   # Implements the swiss tournament system
   module Swiss
     extend self

@@ -1,6 +1,6 @@
-require 'tournament/algorithm/util'
+require 'tournament_system/algorithm/util'
 
-describe Tournament::Algorithm::Util do
+describe TournamentSystem::Algorithm::Util do
   def gen_teams(num)
     (1..num).to_a.freeze
   end

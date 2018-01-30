@@ -1,8 +1,8 @@
 require 'ostruct'
 
-require 'tournament-system'
+require 'tournament_system'
 
-class TestDriver < Tournament::Driver
+class TestDriver < TournamentSystem::Driver
   # rubocop:disable Metrics/CyclomaticComplexity
   def initialize(options = {})
     @teams = options[:teams] || []

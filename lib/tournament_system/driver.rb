@@ -1,4 +1,4 @@
-module Tournament
+module TournamentSystem
   # :reek:UnusedParameters
 
   # An interface for external tournament data.

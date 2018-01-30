@@ -1,7 +1,7 @@
-require 'tournament/swiss/dutch'
-require 'tournament/driver_proxy'
+require 'tournament_system/swiss/dutch'
+require 'tournament_system/driver_proxy'
 
-module Tournament
+module TournamentSystem
   module Swiss
     # A implementation of accelerated (dutch) swiss pairing
     module AcceleratedDutch

@@ -1,4 +1,4 @@
-module Tournament
+module TournamentSystem
   module Algorithm
     # This module provides group pairing algorithms
     module GroupPairing

@@ -1,4 +1,4 @@
-module Tournament
+module TournamentSystem
   module Algorithm
     # This module provides utility functions for helping implement other
     # algorithms.

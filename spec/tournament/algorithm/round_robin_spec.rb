@@ -1,4 +1,4 @@
-describe Tournament::Algorithm::RoundRobin do
+describe TournamentSystem::Algorithm::RoundRobin do
   describe '#total_rounds' do
     it 'works for valid input' do
       expect(described_class.total_rounds(3)).to eq(3)

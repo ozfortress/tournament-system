@@ -1,10 +1,10 @@
-describe Tournament::Swiss do
+describe TournamentSystem::Swiss do
   describe '#minimum_rounds' do
     it 'calls Algorithm::Swiss#minimum_rounds' do
       driver = instance_double('Driver')
       expect(driver).to receive(:seeded_teams) { [1, 2] }
 
-      expect(Tournament::Algorithm::Swiss)
+      expect(TournamentSystem::Algorithm::Swiss)
         .to receive(:minimum_rounds)
           .with(2) { 11 }
 

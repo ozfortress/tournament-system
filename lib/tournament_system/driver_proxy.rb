@@ -1,4 +1,4 @@
-module Tournament
+module TournamentSystem
   # Proxies a driver, allowing overriding of certain functions.
   #
   # Used by tournament systems that build on top of others, with special behaviour.
