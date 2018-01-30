@@ -66,6 +66,14 @@ module Tournament
       raise 'Not Implemented'
     end
 
+    # Required to implement: Get the matches a team has participated in.
+    #
+    # @param team [] a team, eg. one returned by {#seeded_teams}
+    # @return [Array<match>] a list of matches the team has played in
+    def get_team_matches(team)
+      raise 'Not Implemented'
+    end
+
     # Required to implement: Called when a match is created by a tournament system.
     #
     # @example rails
@@ -100,6 +108,13 @@ module Tournament
     # @return [Hash{Set(team, team) => Integer}]
     def matches_hash
       @matches_hash ||= build_matches_hash
+    end
+
+    # Get a hash of the matches teams have played in. Used by tournament systems.
+    #
+    # @return [Hash{team => Array<match>}]
+    def team_matches_hash
+      @team_matches_hash ||= build_team_matches_hash
     end
 
     # Count the number of times each pair of teams has played already. Used by tournament systems.
@@ -150,6 +165,13 @@ module Tournament
       matches.each_with_object(Hash.new(0)) do |match, counter|
         match = Set.new get_match_teams(match)
         counter[match] += 1
+      end
+    end
+
+    def build_team_matches_hash
+      seeded_teams.each_with_object({}) do |team, hash|
+        matches = get_team_matches(team)
+        hash[team] = matches
       end
     end
   end

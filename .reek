@@ -14,3 +14,6 @@ DuplicateMethodCall:
 
 NestedIterators:
   max_allowed_nesting: 2
+
+TooManyMethods:
+  max_methods: 17

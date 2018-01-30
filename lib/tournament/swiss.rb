@@ -1,5 +1,6 @@
 require 'tournament/algorithm/swiss'
 require 'tournament/swiss/dutch'
+require 'tournament/swiss/accelerated_dutch'
 
 module Tournament
   # Implements the swiss tournament system
@@ -21,6 +22,15 @@ module Tournament
       pairings = pairer.pair(driver, pairer_options)
 
       driver.create_matches(pairings)
+    end
+
+    # Guesses the round number (starting from 0) from the maximum amount of matches any team has played.
+    # The guess will be wrong for long running competitions where teams are free to sign up and drop out at any time.
+    #
+    # @param driver [Driver]
+    # @return [Integer]
+    def guess_round(driver)
+      driver.team_matches_hash.values.map(&:length).max || 0
     end
 
     # The minimum number of rounds to determine a number of winners.

@@ -6,7 +6,7 @@ require 'tournament/algorithm/group_pairing'
 
 module Tournament
   module Swiss
-    # A simplified Dutch pairing system implementation.
+    # A Dutch pairing system implementation.
     module Dutch
       extend self
 
