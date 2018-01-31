@@ -18,7 +18,7 @@ module TournamentSystem
       # @param driver [Driver]
       # @option options [Integer] acceleration_rounds determines how many round to perform the acceleration for. This
       #     should be shorter than the length of the tournament in order to produce fair results.
-      # @option options [Integer] acceleration_points determines how many points to grant the teams. This should be
+      # @option options [Number] acceleration_points determines how many points to grant the teams. This should be
       #     approximately equal to the number of points usually granted in one round.
       # @return [Array<Array(team, team)>] the generated pairs of teams
       def pair(driver, options = {})
