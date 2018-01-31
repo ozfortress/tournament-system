@@ -3,7 +3,7 @@ require 'tournament_system/swiss/dutch'
 require 'tournament_system/swiss/accelerated_dutch'
 
 module TournamentSystem
-  # Implements the swiss tournament system
+  # Robust implementation of the swiss tournament system
   module Swiss
     extend self
 

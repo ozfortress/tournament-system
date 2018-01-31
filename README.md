@@ -70,6 +70,8 @@ class Driver < TournamentSystem::Driver
 end
 ```
 
+Check the docs on [`TournamentSystem::Driver`](http://www.rubydoc.info/github/ozfortress/tournament-system/master/Tournament/Driver) for more information.
+
 Then you can simply generate matches for any tournament system using a driver
 instance:
 

@@ -3,20 +3,76 @@ module TournamentSystem
 
   # An interface for external tournament data.
   #
-  # To use any tournament system implemented in this gem, simply subclass this
-  # class and implement the interface functions.
+  # To use any tournament system implemented in this gem, simply subclass this class and implement the interface
+  # functions.
   #
-  # The interface is designed to be useable with arbitrary data,
-  # meaning that as long as your data is consistent it will work with this gem.
-  # Be it Ruby on Rails Models or simply integers.
+  # The interface is designed to be useable with arbitrary data, meaning that as long as your data is consistent it will
+  # work with this gem. Be it Ruby on Rails Models or simply integers.
   #
-  # Certain tournament systems will not make use of certain parts of this
-  # interface. You can for example leave out `#get_team_score` if you're not
-  # using the Swiss tournament system.
+  # Certain tournament systems will not make use of certain parts of this interface. You can for example leave out
+  # `#get_team_score` if you're not using the Swiss tournament system.
   #
-  # This class caches certain calculations/objects, it is designed to be a
-  # one-time use with any one tournament system. Reusing an instance may result
-  # in undefined behaviour.
+  # This class caches certain calculations/objects, it is designed to be a one-time use with any one tournament system.
+  # Reusing an instance is undefined behaviour.
+  #
+  # @example Example of Rails models and a tournament system driver
+  #   class Tournament < ActiveRecord::Base
+  #     has_many :matches
+  #     has_many :teams
+  #   end
+  #
+  #   class Match < ActiveRecord::Base
+  #     belongs_to :tournament
+  #     belongs_to :team1, class_name: 'Team'
+  #     belongs_to :team2, class_name: 'Team'
+  #     belongs_to :winner, class_name: 'Team'
+  #   end
+  #
+  #   class Team < ActiveRecord::Base
+  #     belongs_to :tournament
+  #
+  #     validates :seed, numericality: { only_integer: true }
+  #     validates :points, numericality: { only_integer: true }
+  #   end
+  #
+  #   class Driver < TournamentSystem
+  #     def initialize(tournament)
+  #       @tournament = tournament
+  #     end
+  #
+  #     def matches
+  #       @tournament.matches
+  #     end
+  #
+  #     def seeded_teams
+  #       @tournament.teams.order(:seed).to_a
+  #     end
+  #
+  #     def ranked_teams
+  #       @tournament.teams.order(:points).to_a
+  #     end
+  #
+  #     def get_match_winner(match)
+  #       match.winner
+  #     end
+  #
+  #     def get_match_teams(match)
+  #       [match.team1, match.team2]
+  #     end
+  #
+  #     def get_team_score(team)
+  #       team.points
+  #     end
+  #
+  #     def get_team_matches(team)
+  #       @tournament.matches.where(team1: team) +
+  #         @tournament.matches.where(team2: team)
+  #     end
+  #
+  #     def build_match(home_team, away_team)
+  #       @tournament.matches.create!(team1: home_team, team2: away_team)
+  #     end
+  #   end
   class Driver
     # rubocop:disable Lint/UnusedMethodArgument
     # :nocov:
