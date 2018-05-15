@@ -27,6 +27,9 @@ module TournamentSystem
       end
     end
 
+    # Rubocop doesn't handle _ as a parameter sink
+    # rubocop:disable Naming/UncommunicativeMethodParamName
+
     # The total number of rounds in a page playoff tournament
     #
     # @param _ for keeping the same interface as other tournament systems.
@@ -34,6 +37,8 @@ module TournamentSystem
     def total_rounds(_ = nil)
       Algorithm::PagePlayoff::TOTAL_ROUNDS
     end
+
+    # rubocop:enable Naming/UncommunicativeMethodParamName
 
     # Guess the next round number (starting at 0) from the state in a driver.
     #

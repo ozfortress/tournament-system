@@ -1,13 +1,9 @@
 AllCops:
   DisplayCopNames: true
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.5
 
 Metrics/LineLength:
   Max: 120
-
-# This is fine, really
-Naming/FileName:
-  Enabled: false
 
 # 'old' style
 Style/EmptyMethod:
@@ -17,7 +13,7 @@ Style/EmptyMethod:
 Bundler/OrderedGems:
   Enabled: false
 
-# Not interchangeable
+# `module_function` and `extend self` aren't actually interchangeable
 Style/ModuleFunction:
   Enabled: false
 
@@ -26,8 +22,11 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 
 # Doesn't really make sense for multiline
-Style/TrailingCommaInLiteral:
-  Enabled: false
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
 
 # Tests should be as long as they need to be
 Metrics/BlockLength:
