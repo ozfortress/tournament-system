@@ -45,15 +45,14 @@ module TournamentSystem
         round.to_i
       end
 
-      # Padd an array of teams to the next highest power of 2.
-      #
-      # @param teams [Array<team>]
-      # @return [Array<team, nil>]
+      # @deprecated Please use {Util.padd_teams_pow2} instead.
       def padd_teams(teams)
-        required = max_teams(total_rounds(teams.length))
+        message = 'NOTE: padd_teams is now deprecated in favour of Util.padd_teams_even.'\
+                  'It will be removed in the next major version'\
+                  "SingleBracket.padd_teams called from #{Gem.location_of_caller.join(':')}"
+        warn message unless Gem::Deprecate.skip
 
-        # Insert the padding at the bottom to give top teams byes first
-        Array.new(required) { |index| teams[index] }
+        Util.padd_teams_pow2(teams)
       end
 
       # Seed teams for a single bracket tournament.

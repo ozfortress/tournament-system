@@ -5,16 +5,40 @@ module TournamentSystem
     module Util
       extend self
 
+      # @deprecated Please use {#padd_teams_even} instead.
+      def padd_teams(teams)
+        message = 'NOTE: padd_teams is now deprecated in favour of padd_teams_even. '\
+                  'It will be removed in the next major version.'\
+                  "Util.padd_teams called from #{Gem.location_of_caller.join(':')}"
+        warn message unless Gem::Deprecate.skip
+
+        padd_teams_even(teams)
+      end
+
       # Padd an array of teams to be even.
       #
       # @param teams [Array<team>]
       # @return [Array<team, nil>]
-      def padd_teams(teams)
+      def padd_teams_even(teams)
         if teams.length.odd?
           teams + [nil]
         else
           teams
         end
+      end
+
+      # pow2 is not uncommunicative
+      # :reek:UncommunicativeMethodName
+
+      # Padd an array of teams to the next power of 2.
+      #
+      # @param teams [Array<team>]
+      # @return [Array<team, nil>]
+      def padd_teams_pow2(teams)
+        # Get the next power of 2
+        required = 2**Math.log2(teams.length).ceil
+
+        Array.new(required) { |index| teams[index] }
       end
 
       # Padd the count of teams to be even.

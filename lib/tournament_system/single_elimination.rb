@@ -14,7 +14,7 @@ module TournamentSystem
       round = guess_round(driver)
 
       teams = if driver.matches.empty?
-                padded = Algorithm::SingleBracket.padd_teams driver.seeded_teams
+                padded = Algorithm::Util.padd_teams_pow2 driver.seeded_teams
                 Algorithm::SingleBracket.seed padded
               else
                 last_matches = previous_round_matches driver, round

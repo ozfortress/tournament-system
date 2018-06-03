@@ -5,26 +5,42 @@ describe TournamentSystem::Algorithm::Util do
     (1..num).to_a.freeze
   end
 
-  describe '#padd_teams' do
+  describe '#padd_teams_even' do
     it 'works for even teams' do
-      expect(described_class.padd_teams(gen_teams(2))).to eq((1..2).to_a)
-      expect(described_class.padd_teams(gen_teams(4))).to eq((1..4).to_a)
-      expect(described_class.padd_teams(gen_teams(6))).to eq((1..6).to_a)
-      expect(described_class.padd_teams(gen_teams(8))).to eq((1..8).to_a)
+      expect(described_class.padd_teams_even(gen_teams(2))).to eq((1..2).to_a)
+      expect(described_class.padd_teams_even(gen_teams(4))).to eq((1..4).to_a)
+      expect(described_class.padd_teams_even(gen_teams(6))).to eq((1..6).to_a)
+      expect(described_class.padd_teams_even(gen_teams(8))).to eq((1..8).to_a)
     end
 
     it 'works for odd teams' do
-      expect(described_class.padd_teams(gen_teams(3)))
+      expect(described_class.padd_teams_even(gen_teams(3)))
         .to eq((1..3).to_a + [nil])
 
-      expect(described_class.padd_teams(gen_teams(5)))
+      expect(described_class.padd_teams_even(gen_teams(5)))
         .to eq((1..5).to_a + [nil])
 
-      expect(described_class.padd_teams(gen_teams(7)))
+      expect(described_class.padd_teams_even(gen_teams(7)))
         .to eq((1..7).to_a + [nil])
 
-      expect(described_class.padd_teams(gen_teams(9)))
+      expect(described_class.padd_teams_even(gen_teams(9)))
         .to eq((1..9).to_a + [nil])
+    end
+  end
+
+  describe '#padd_teams_pow2' do
+    it 'works' do
+      expect(described_class.padd_teams_pow2(gen_teams(2))).to eq([1, 2])
+      expect(described_class.padd_teams_pow2(gen_teams(3))).to eq([1, 2, 3, nil])
+      expect(described_class.padd_teams_pow2(gen_teams(4))).to eq([1, 2, 3, 4])
+      expect(described_class.padd_teams_pow2(gen_teams(5)))
+        .to eq([1, 2, 3, 4, 5, nil, nil, nil])
+      expect(described_class.padd_teams_pow2(gen_teams(6)))
+        .to eq([1, 2, 3, 4, 5, 6, nil, nil])
+      expect(described_class.padd_teams_pow2(gen_teams(7)))
+        .to eq([1, 2, 3, 4, 5, 6, 7, nil])
+      expect(described_class.padd_teams_pow2(gen_teams(8)))
+        .to eq([1, 2, 3, 4, 5, 6, 7, 8])
     end
   end
 
