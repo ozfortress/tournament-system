@@ -87,7 +87,7 @@ TournamentSystem::RoundRobin.generate driver
 # Generate a round for a swiss system tournament, pushing byes to the bottom
 #  half (bottom half teams will bye before the top half)
 TournamentSystem::Swiss.generate driver, pairer: TournamentSystem::Swiss::Dutch,
-                                   pair_options: { push_byes_to: :bottom_half }
+                                         pair_options: { push_byes_to: :bottom_half }
 
 # Alternatively use the accelerated swiss system
 TournamentSystem::Swiss.generate driver, pairer: TournamentSystem::Swiss::AcceleratedDutch
