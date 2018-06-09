@@ -14,7 +14,7 @@ module TournamentSystem
       # @param teams_count [Integer] the number of teams
       # @return [Integer] number of rounds needed for round robin
       def total_rounds(teams_count)
-        Util.padded_teams_count(teams_count) - 1
+        Util.padded_teams_even_count(teams_count) - 1
       end
 
       # Guess the next round (starting at 0) for round robin.
@@ -23,7 +23,7 @@ module TournamentSystem
       # @param matches_count [Integer] the number of existing matches
       # @return [Integer] next round number
       def guess_round(teams_count, matches_count)
-        matches_count / (Util.padded_teams_count(teams_count) / 2)
+        matches_count / (Util.padded_teams_even_count(teams_count) / 2)
       end
 
       # Rotate array using round robin.

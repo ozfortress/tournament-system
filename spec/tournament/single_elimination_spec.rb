@@ -1,6 +1,6 @@
 describe TournamentSystem::SingleElimination do
   describe '#total_rounds' do
-    it 'calls Algorithm::Swiss#total_rounds' do
+    it 'calls Algorithm::SingleBracket#total_rounds' do
       driver = instance_double('Driver')
       expect(driver).to receive(:seeded_teams) { [1, 2] }
 
@@ -13,7 +13,7 @@ describe TournamentSystem::SingleElimination do
   end
 
   describe '#guess_round' do
-    it 'calls Algorithm::Swiss#guess_round' do
+    it 'calls Algorithm::SingleBracket#guess_round' do
       driver = instance_double('Driver')
       expect(driver).to receive(:seeded_teams) { [1, 2, 3, 4] }
       expect(driver).to receive(:matches) { [1, 2] }

@@ -27,6 +27,27 @@ module TournamentSystem
         end
       end
 
+      # @deprecated Please use {#padded_teams_even_count}
+      def padded_teams_count(teams_count)
+        message = 'Node: padded_teams_count is now deprecated in favour of padded_teams_even_count. '\
+                  'It will be removed in the next major version.'\
+                  "Util.padded_teams_count called from #{Gem.location_of_caller.join(':')}"
+        warn message unless Gem::Deprecate.skip
+
+        padded_teams_even_count(teams_count)
+      end
+
+      # Padd the count of teams to be even.
+      #
+      # @example
+      #   padded_teams_even_count(teams.length) == padd_teams_even(teams).length
+      #
+      # @param teams_count [Integer] the number of teams
+      # @return [Integer]
+      def padded_teams_even_count(teams_count)
+        (teams_count / 2.0).ceil * 2
+      end
+
       # pow2 is not uncommunicative
       # :reek:UncommunicativeMethodName
 
@@ -35,21 +56,20 @@ module TournamentSystem
       # @param teams [Array<team>]
       # @return [Array<team, nil>]
       def padd_teams_pow2(teams)
-        # Get the next power of 2
-        required = 2**Math.log2(teams.length).ceil
+        required = padded_teams_pow2_count(teams.length)
 
         Array.new(required) { |index| teams[index] }
       end
 
-      # Padd the count of teams to be even.
+      # Padd the count of teams to be a power of 2.
       #
       # @example
-      #   padded_teams_count(teams.length/) == padd_teams(teams).length
+      #   padded_teams_pow2_count(teams.length) == padd_teams_pow2(teams).length
       #
       # @param teams_count [Integer] the number of teams
       # @return [Integer]
-      def padded_teams_count(teams_count)
-        (teams_count / 2.0).ceil * 2
+      def padded_teams_pow2_count(teams_count)
+        2**Math.log2(teams_count).ceil
       end
 
       # rubocop:disable Metrics/MethodLength

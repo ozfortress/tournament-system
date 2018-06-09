@@ -28,6 +28,24 @@ describe TournamentSystem::Algorithm::Util do
     end
   end
 
+  describe '#padded_teams_even_count' do
+    it 'works for even numbers' do
+      expect(described_class.padded_teams_even_count(2)).to eq(2)
+      expect(described_class.padded_teams_even_count(4)).to eq(4)
+      expect(described_class.padded_teams_even_count(6)).to eq(6)
+      expect(described_class.padded_teams_even_count(8)).to eq(8)
+      expect(described_class.padded_teams_even_count(10)).to eq(10)
+    end
+
+    it 'works for odd numbers' do
+      expect(described_class.padded_teams_even_count(3)).to eq(4)
+      expect(described_class.padded_teams_even_count(5)).to eq(6)
+      expect(described_class.padded_teams_even_count(7)).to eq(8)
+      expect(described_class.padded_teams_even_count(9)).to eq(10)
+      expect(described_class.padded_teams_even_count(11)).to eq(12)
+    end
+  end
+
   describe '#padd_teams_pow2' do
     it 'works' do
       expect(described_class.padd_teams_pow2(gen_teams(2))).to eq([1, 2])
@@ -44,21 +62,20 @@ describe TournamentSystem::Algorithm::Util do
     end
   end
 
-  describe '#padded_teams_count' do
-    it 'works for even numbers' do
-      expect(described_class.padded_teams_count(2)).to eq(2)
-      expect(described_class.padded_teams_count(4)).to eq(4)
-      expect(described_class.padded_teams_count(6)).to eq(6)
-      expect(described_class.padded_teams_count(8)).to eq(8)
-      expect(described_class.padded_teams_count(10)).to eq(10)
-    end
-
-    it 'works for odd numbers' do
-      expect(described_class.padded_teams_count(3)).to eq(4)
-      expect(described_class.padded_teams_count(5)).to eq(6)
-      expect(described_class.padded_teams_count(7)).to eq(8)
-      expect(described_class.padded_teams_count(9)).to eq(10)
-      expect(described_class.padded_teams_count(11)).to eq(12)
+  describe '#padded_teams_pow2_count' do
+    it 'works' do
+      expect(described_class.padded_teams_pow2_count(2)).to eq(2)
+      expect(described_class.padded_teams_pow2_count(3)).to eq(4)
+      expect(described_class.padded_teams_pow2_count(4)).to eq(4)
+      expect(described_class.padded_teams_pow2_count(5)).to eq(8)
+      expect(described_class.padded_teams_pow2_count(7)).to eq(8)
+      expect(described_class.padded_teams_pow2_count(8)).to eq(8)
+      expect(described_class.padded_teams_pow2_count(9)).to eq(16)
+      expect(described_class.padded_teams_pow2_count(10)).to eq(16)
+      expect(described_class.padded_teams_pow2_count(11)).to eq(16)
+      expect(described_class.padded_teams_pow2_count(14)).to eq(16)
+      expect(described_class.padded_teams_pow2_count(16)).to eq(16)
+      expect(described_class.padded_teams_pow2_count(17)).to eq(32)
     end
   end
 

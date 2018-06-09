@@ -2,8 +2,7 @@ require 'ostruct'
 
 module TournamentSystem
   module Algorithm
-    # This module provides algorithms for dealing with single bracket
-    # elimination tournament systems.
+    # This module provides algorithms for dealing with single bracket elimination tournament systems.
     module SingleBracket
       extend self
 

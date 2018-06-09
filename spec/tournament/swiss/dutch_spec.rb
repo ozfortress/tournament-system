@@ -53,7 +53,7 @@ describe TournamentSystem::Swiss::Dutch do
         matches = []
 
         round_count = 15
-        match_count_per_round = TournamentSystem::Algorithm::Util.padded_teams_count(teams.length) / 2
+        match_count_per_round = TournamentSystem::Algorithm::Util.padded_teams_even_count(teams.length) / 2
         round_count.times do
           ranked_teams = teams.sort_by
                               .with_index { |t, i| [-scores[t], i] }
@@ -96,7 +96,7 @@ describe TournamentSystem::Swiss::Dutch do
         matches = []
 
         round_count = 15
-        match_count_per_round = TournamentSystem::Algorithm::Util.padded_teams_count(teams.length) / 2
+        match_count_per_round = TournamentSystem::Algorithm::Util.padded_teams_even_count(teams.length) / 2
         round_count.times do
           ranked_teams = teams.sort_by
                               .with_index { |t, i| [-scores[t], i] }
