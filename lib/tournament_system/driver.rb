@@ -1,5 +1,5 @@
 module TournamentSystem
-  # :reek:UnusedParameters
+  # :reek:UnusedParameters :reek:TooManyMethods
 
   # An interface for external tournament data.
   #
@@ -159,6 +159,21 @@ module TournamentSystem
       get_match_teams(match).reject { |team| team == winner }.first
     end
 
+    # Determine whether a specific match was a bye? By default uses {#get_match_teams} to determine a bye. Override if
+    # you have better access to this information.
+    #
+    # @return [Boolean]
+    def match_bye?(match)
+      get_match_teams(match).include?(nil)
+    end
+
+    # Get a list of matches that weren't byes. Used by tournament systems.
+    #
+    # @return [Array<match>]
+    def non_bye_matches
+      matches.reject { |match| match_bye?(match) }
+    end
+
     # Get a hash of unique team pairs and their number of occurences. Used by tournament systems.
     #
     # @return [Hash{Set(team, team) => Integer}]
@@ -199,10 +214,10 @@ module TournamentSystem
     # Create a bunch of matches. Used by tournament systems.
     # @see #create_match
     #
-    # @param matches [Array<Array(team, team)>] a collection of pairs
+    # @param pairs [Array<Array(team, team)>] a collection of pairs
     # @return [nil]
-    def create_matches(matches)
-      matches.each do |home_team, away_team|
+    def create_matches(pairs)
+      pairs.each do |home_team, away_team|
         create_match(home_team, away_team)
       end
     end
@@ -211,8 +226,14 @@ module TournamentSystem
     #
     # @return [Hash{team => Number}] a mapping from teams to scores
     def scores_hash
-      @scores_hash = ranked_teams.map { |team| [team, get_team_score(team)] }
-                                 .to_h
+      @scores_hash ||= ranked_teams.map { |team| [team, get_team_score(team)] }.to_h
+    end
+
+    # Get a hash of the number of losses of each team. Used by tournament systems.
+    #
+    # @return [Hash{team => Number}] a mapping from teams to losses
+    def loss_count_hash
+      @loss_count_hash ||= matches.each_with_object(Hash.new(0)) { |match, hash| hash[get_match_loser(match)] += 1 }
     end
 
     private
