@@ -31,10 +31,12 @@ describe TournamentSystem::RoundRobin do
       it 'works for 4 teams' do
         driver = TestDriver.new(teams: [1, 2, 3, 4])
 
-        described_class.generate driver
+        matches = described_class.generate driver
 
-        expect(driver.created_matches.length).to eq(2)
-        match1, match2 = driver.created_matches
+        expect(driver.created_matches).to eq matches
+
+        expect(matches.length).to eq(2)
+        match1, match2 = matches
         expect(match1.home_team).to eq(1)
         expect(match1.away_team).to eq(4)
         expect(match2.home_team).to eq(2)
@@ -44,10 +46,12 @@ describe TournamentSystem::RoundRobin do
       it 'works for 5 teams' do
         driver = TestDriver.new(teams: [1, 2, 3, 4, 5])
 
-        described_class.generate driver
+        matches = described_class.generate driver
 
-        expect(driver.created_matches.length).to eq(3)
-        match1, match2, match3 = driver.created_matches
+        expect(driver.created_matches).to eq matches
+
+        expect(matches.length).to eq(3)
+        match1, match2, match3 = matches
         expect(match1.home_team).to eq(1)
         expect(match1.away_team).to be nil
         expect(match2.home_team).to eq(2)
@@ -63,9 +67,7 @@ describe TournamentSystem::RoundRobin do
 
         (0...3).each do |round|
           described_class.generate driver, round: round
-          driver.matches += driver.created_matches.map do |match|
-            [match.home_team, match.away_team]
-          end
+          driver.matches += driver.created_matches
           driver.created_matches = []
         end
 
@@ -87,9 +89,7 @@ describe TournamentSystem::RoundRobin do
 
         (0...5).each do |round|
           described_class.generate driver, round: round
-          driver.matches += driver.created_matches.map do |match|
-            [match.home_team, match.away_team]
-          end
+          driver.matches += driver.created_matches
           driver.created_matches = []
         end
 

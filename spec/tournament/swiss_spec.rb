@@ -15,13 +15,18 @@ describe TournamentSystem::Swiss do
   describe '#generate' do
     it 'calls pairer and generates matches' do
       driver = TestDriver.new
-      expect(driver).to receive(:create_match).with(1, 2)
-      expect(driver).to receive(:create_match).with(4, 3)
 
       pairer = instance_double('Pairer')
       expect(pairer).to receive(:pair).with(driver, 3) { [[1, 2], [4, 3]] }
 
-      described_class.generate(driver, pairer: pairer, pair_options: 3)
+      matches = described_class.generate(driver, pairer: pairer, pair_options: 3)
+
+      expect(matches.length).to eq 2
+      match1, match2 = matches
+      expect(match1.home_team).to eq(1)
+      expect(match1.away_team).to eq(2)
+      expect(match2.home_team).to eq(4)
+      expect(match2.away_team).to eq(3)
     end
   end
 end
