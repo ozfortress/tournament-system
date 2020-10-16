@@ -114,11 +114,8 @@ describe TournamentSystem::DoubleElimination do
 
         4.times do |round|
           driver = TestDriver.new(teams: (1..4).to_a, winners: winners, matches: matches)
-          described_class.generate driver
+          round_matches = described_class.generate driver
 
-          round_matches = driver.created_matches.map do |match|
-            [match.home_team, match.away_team]
-          end
           matches += round_matches
           matches_by_round[round] = round_matches
         end
@@ -152,11 +149,8 @@ describe TournamentSystem::DoubleElimination do
 
         6.times do |round|
           driver = TestDriver.new(teams: (1..5).to_a, winners: winners, matches: matches)
-          described_class.generate driver
+          round_matches = described_class.generate driver
 
-          round_matches = driver.created_matches.map do |match|
-            [match.home_team, match.away_team]
-          end
           matches += round_matches
           matches_by_round[round] = round_matches
         end
@@ -185,11 +179,8 @@ describe TournamentSystem::DoubleElimination do
 
         6.times do |round|
           driver = TestDriver.new(teams: (1..8).to_a, winners: winners, matches: matches)
-          described_class.generate driver
+          round_matches = described_class.generate driver
 
-          round_matches = driver.created_matches.map do |match|
-            [match.home_team, match.away_team]
-          end
           matches += round_matches
           matches_by_round[round] = round_matches
         end

@@ -2,6 +2,16 @@ require 'ostruct'
 
 require 'tournament_system'
 
+class Match < Array
+  def home_team
+    self.first
+  end
+
+  def away_team
+    self.last
+  end
+end
+
 class TestDriver < TournamentSystem::Driver
   # rubocop:disable Metrics/CyclomaticComplexity
   def initialize(options = {})
@@ -42,8 +52,7 @@ class TestDriver < TournamentSystem::Driver
   end
 
   def build_match(home_team, away_team)
-    match = OpenStruct.new(home_team: home_team,
-                           away_team: away_team)
+    match = Match.new([home_team, away_team])
     @created_matches << match
     match
   end

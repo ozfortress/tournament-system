@@ -67,9 +67,7 @@ describe TournamentSystem::RoundRobin do
 
         (0...3).each do |round|
           described_class.generate driver, round: round
-          driver.matches += driver.created_matches.map do |match|
-            [match.home_team, match.away_team]
-          end
+          driver.matches += driver.created_matches
           driver.created_matches = []
         end
 
@@ -91,9 +89,7 @@ describe TournamentSystem::RoundRobin do
 
         (0...5).each do |round|
           described_class.generate driver, round: round
-          driver.matches += driver.created_matches.map do |match|
-            [match.home_team, match.away_team]
-          end
+          driver.matches += driver.created_matches
           driver.created_matches = []
         end
 

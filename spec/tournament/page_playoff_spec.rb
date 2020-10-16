@@ -38,10 +38,12 @@ describe TournamentSystem::PagePlayoff do
     context 'semi-finals' do
       it 'works' do
         driver = TestDriver.new(teams: teams)
-        described_class.generate driver
 
-        expect(driver.created_matches.length).to eq(2)
-        match1, match2 = driver.created_matches
+        matches = described_class.generate driver
+        expect(driver.created_matches).to eq matches
+
+        expect(matches.length).to eq(2)
+        match1, match2 = matches
         expect(match1.home_team).to eq(1)
         expect(match1.away_team).to eq(2)
         expect(match2.home_team).to eq(3)
@@ -56,10 +58,11 @@ describe TournamentSystem::PagePlayoff do
         winners = { [1, 2] => 2, [3, 4] => 4 }
         driver = TestDriver.new(teams: teams, winners: winners,
                                 matches: matches)
-        described_class.generate driver
+        matches = described_class.generate driver
+        expect(driver.created_matches).to eq matches
 
-        expect(driver.created_matches.length).to eq(1)
-        match = driver.created_matches.first
+        expect(matches.length).to eq(1)
+        match = matches.first
         expect(match.home_team).to eq(1)
         expect(match.away_team).to eq(4)
       end
@@ -72,25 +75,27 @@ describe TournamentSystem::PagePlayoff do
         winners = { [1, 2] => 2, [3, 4] => 4, [1, 4] => 1 }
         driver = TestDriver.new(teams: teams, winners: winners,
                                 matches: matches)
-        described_class.generate driver
+        matches = described_class.generate driver
+        expect(driver.created_matches).to eq matches
 
-        expect(driver.created_matches.length).to eq(1)
-        match = driver.created_matches.first
+        expect(matches.length).to eq(1)
+        match = matches.first
         expect(match.home_team).to eq(2)
         expect(match.away_team).to eq(1)
       end
 
       it 'generates bronze match' do
-        winners = { [1, 2] => 2, [3, 4] => 4, [1, 4] => 4 }
+        winners = { [1, 2] => 2, [3, 4] => 4, [1, 4] => 1 }
         driver = TestDriver.new(teams: teams, winners: winners,
                                 matches: matches)
-        described_class.generate driver, bronze_match: true
+        matches = described_class.generate driver, bronze_match: true
+        expect(driver.created_matches).to eq matches
 
-        expect(driver.created_matches.length).to eq(2)
-        match1, match2 = driver.created_matches
+        expect(matches.length).to eq(2)
+        match1, match2 = matches
         expect(match1.home_team).to eq(2)
-        expect(match1.away_team).to eq(4)
-        expect(match2.home_team).to eq(1)
+        expect(match1.away_team).to eq(1)
+        expect(match2.home_team).to eq(4)
         expect(match2.away_team).to eq(3)
       end
     end
