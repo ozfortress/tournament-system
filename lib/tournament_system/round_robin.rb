@@ -42,7 +42,7 @@ module TournamentSystem
     private
 
     def create_matches(driver, matches, round)
-      matches.each do |match|
+      matches.map do |match|
         # Alternate home/away
         match = match.reverse if round.odd? && match[0]
 

@@ -42,8 +42,10 @@ class TestDriver < TournamentSystem::Driver
   end
 
   def build_match(home_team, away_team)
-    @created_matches << OpenStruct.new(home_team: home_team,
-                                       away_team: away_team)
+    match = OpenStruct.new(home_team: home_team,
+                           away_team: away_team)
+    @created_matches << match
+    match
   end
 
   private
