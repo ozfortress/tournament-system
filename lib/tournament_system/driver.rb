@@ -156,6 +156,7 @@ module TournamentSystem
       winner = get_match_winner(match)
 
       return nil unless winner
+
       get_match_teams(match).reject { |team| team == winner }.first
     end
 
@@ -202,7 +203,7 @@ module TournamentSystem
     #
     # @param home_team [team, nil]
     # @param away_team [team, nil]
-    # @return [nil]
+    # @return [match]
     # @raise when both teams are +nil+
     def create_match(home_team, away_team)
       home_team, away_team = away_team, home_team unless home_team
@@ -215,9 +216,9 @@ module TournamentSystem
     # @see #create_match
     #
     # @param pairs [Array<Array(team, team)>] a collection of pairs
-    # @return [nil]
+    # @return [Array<match>]
     def create_matches(pairs)
-      pairs.each do |home_team, away_team|
+      pairs.map do |home_team, away_team|
         create_match(home_team, away_team)
       end
     end
