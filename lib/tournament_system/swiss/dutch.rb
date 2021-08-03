@@ -104,6 +104,8 @@ module TournamentSystem
           if (push_byes_to == :bottom_half && index < state.teams.length / 2) ||
              (push_byes_to == :top_half && index > state.teams.length / 2)
             cost += state.score_range
+          elsif push_byes_to == :lowest_score
+            cost += state.score_range * index**2
           end
         end
 

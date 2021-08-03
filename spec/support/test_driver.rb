@@ -13,12 +13,12 @@ class Match < Array
 end
 
 class TestDriver < TournamentSystem::Driver
-  def initialize(options = {})
+  def initialize(options = {}) # rubocop:disable Metrics/CyclomaticComplexity
     @teams = options[:teams] || []
-    @ranked_teams = options[:ranked_teams] || @teams
     @matches = options[:matches] || []
     @winners = options[:winners] || {}
     @scores = options[:scores] || Hash.new(0)
+    @ranked_teams = options[:ranked_teams] || @teams.sort_by { |t| @scores[t] }
     @team_matches = options[:team_matches] || build_team_matches_from_matches
     @created_matches = []
     super()
