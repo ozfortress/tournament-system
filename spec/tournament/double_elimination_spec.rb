@@ -34,10 +34,12 @@ describe TournamentSystem::DoubleElimination do
     context 'first round' do
       it 'works for 4 teams' do
         driver = TestDriver.new(teams: [1, 2, 3, 4])
-        described_class.generate driver
 
-        expect(driver.created_matches.length).to eq(2)
-        match1, match2 = driver.created_matches
+        matches = described_class.generate driver
+        expect(driver.created_matches).to eq matches
+
+        expect(matches.length).to eq(2)
+        match1, match2 = matches
         expect(match1.home_team).to eq(1)
         expect(match1.away_team).to eq(4)
         expect(match2.home_team).to eq(2)
@@ -46,10 +48,12 @@ describe TournamentSystem::DoubleElimination do
 
       it 'works for 5 teams' do
         driver = TestDriver.new(teams: [1, 2, 3, 4, 5])
-        described_class.generate driver
 
-        expect(driver.created_matches.length).to eq(4)
-        match1, match2, match3, match4 = driver.created_matches
+        matches = described_class.generate driver
+        expect(driver.created_matches).to eq matches
+
+        expect(matches.length).to eq(4)
+        match1, match2, match3, match4 = matches
         bies = [1, 2, 3]
         [match1, match3, match4].zip(bies).each do |match, team|
           expect(match.home_team).to eq(team)
@@ -62,10 +66,12 @@ describe TournamentSystem::DoubleElimination do
 
       it 'works for 6 teams' do
         driver = TestDriver.new(teams: [1, 2, 3, 4, 5, 6])
-        described_class.generate driver
 
-        expect(driver.created_matches.length).to eq(4)
-        match1, match2, match3, match4 = driver.created_matches
+        matches = described_class.generate driver
+        expect(driver.created_matches).to eq matches
+
+        expect(matches.length).to eq(4)
+        match1, match2, match3, match4 = matches
         expect(match1.home_team).to eq(1)
         expect(match1.away_team).to be nil
         expect(match2.home_team).to eq(4)
@@ -78,10 +84,12 @@ describe TournamentSystem::DoubleElimination do
 
       it 'works for 16 teams' do
         driver = TestDriver.new(teams: (1..16).to_a)
-        described_class.generate driver
 
-        expect(driver.created_matches.length).to eq(8)
-        matches = [
+        matches = described_class.generate driver
+        expect(driver.created_matches).to eq matches
+
+        expect(matches.length).to eq(8)
+        matched_teams = [
           [1, 16],
           [8, 9],
           [4, 13],
@@ -91,7 +99,7 @@ describe TournamentSystem::DoubleElimination do
           [3, 14],
           [6, 11],
         ]
-        driver.created_matches.zip(matches).each do |match, teams|
+        matches.zip(matched_teams).each do |match, teams|
           expect(match.home_team).to eq(teams[0])
           expect(match.away_team).to eq(teams[1])
         end
@@ -106,11 +114,8 @@ describe TournamentSystem::DoubleElimination do
 
         4.times do |round|
           driver = TestDriver.new(teams: (1..4).to_a, winners: winners, matches: matches)
-          described_class.generate driver
+          round_matches = described_class.generate driver
 
-          round_matches = driver.created_matches.map do |match|
-            [match.home_team, match.away_team]
-          end
           matches += round_matches
           matches_by_round[round] = round_matches
         end
@@ -144,11 +149,8 @@ describe TournamentSystem::DoubleElimination do
 
         6.times do |round|
           driver = TestDriver.new(teams: (1..5).to_a, winners: winners, matches: matches)
-          described_class.generate driver
+          round_matches = described_class.generate driver
 
-          round_matches = driver.created_matches.map do |match|
-            [match.home_team, match.away_team]
-          end
           matches += round_matches
           matches_by_round[round] = round_matches
         end
@@ -164,24 +166,21 @@ describe TournamentSystem::DoubleElimination do
       end
 
       it 'works for 8 teams' do
-        # rubocop:disable Lint/DuplicatedKey
+        # rubocop:disable Lint/DuplicateHashKey
         winners = {
           [1, 8] => 1, [4, 5] => 5, [2, 7] => 2, [3, 6] => 3,
           [1, 5] => 1, [2, 3] => 3, [8, 4] => 4, [7, 6] => 6,
           [4, 5] => 5, [2, 6] => 2,
           [1, 3] => 1, [5, 2] => 2,
         }
-        # rubocop:enable Lint/DuplicatedKey
+        # rubocop:enable Lint/DuplicateHashKey
         matches = []
         matches_by_round = {}
 
         6.times do |round|
           driver = TestDriver.new(teams: (1..8).to_a, winners: winners, matches: matches)
-          described_class.generate driver
+          round_matches = described_class.generate driver
 
-          round_matches = driver.created_matches.map do |match|
-            [match.home_team, match.away_team]
-          end
           matches += round_matches
           matches_by_round[round] = round_matches
         end

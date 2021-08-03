@@ -28,7 +28,6 @@ module TournamentSystem
     end
 
     # Rubocop doesn't handle _ as a parameter sink
-    # rubocop:disable Naming/UncommunicativeMethodParamName
 
     # The total number of rounds in a page playoff tournament
     #
@@ -37,8 +36,6 @@ module TournamentSystem
     def total_rounds(_ = nil)
       Algorithm::PagePlayoff::TOTAL_ROUNDS
     end
-
-    # rubocop:enable Naming/UncommunicativeMethodParamName
 
     # Guess the next round number (starting at 0) from the state in a driver.
     #
@@ -59,7 +56,7 @@ module TournamentSystem
       top_loser = driver.get_match_loser matches[0]
       bottom_winner = driver.get_match_winner matches[1]
 
-      driver.create_match top_loser, bottom_winner
+      driver.create_matches [[top_loser, bottom_winner]]
     end
 
     def grand_finals(driver, options)
@@ -67,16 +64,16 @@ module TournamentSystem
       top_winner = driver.get_match_winner matches[0]
       bottom_winner = driver.get_match_winner matches[2]
 
-      driver.create_match top_winner, bottom_winner
-
-      bronze_finals(driver, matches) if options[:bronze_match]
+      new_matches = driver.create_matches [[top_winner, bottom_winner]]
+      new_matches += bronze_finals(driver, driver.matches) if options[:bronze_match]
+      new_matches
     end
 
     def bronze_finals(driver, matches)
       prelim_loser = driver.get_match_loser matches[2]
       bottom_semi_loser = driver.get_match_loser matches[1]
 
-      driver.create_match prelim_loser, bottom_semi_loser
+      driver.create_matches [[prelim_loser, bottom_semi_loser]]
     end
   end
 end

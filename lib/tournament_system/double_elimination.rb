@@ -40,7 +40,7 @@ module TournamentSystem
     # @return [Integer]
     def guess_round(driver)
       Algorithm::DoubleBracket.guess_round(driver.seeded_teams.length,
-                                           driver.non_bye_matches .length)
+                                           driver.non_bye_matches.length)
     end
 
     private
