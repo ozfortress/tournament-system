@@ -92,6 +92,21 @@ describe TournamentSystem::Voetlab do
         [1, nil], [2, 3], [4, 5]
       ]
     end
+
+    it 'calls generates matches round 6' do
+      driver = TestDriver.new(
+        teams: [1, 2, 3, 4, 5],
+        matches: [[1, 2], [3, 4], [5, nil], [1, 5], [4, 2], [3, nil], [1, 3], [4, nil], [2, 5], [1, 4], [3, 5], [2, nil], [1, nil], [2, 3], [4, 5]],
+        winners: {[1, 2] => 1, [3, 4] => 3, [5, nil] => 5, [1, 5] => 5, [4, 2] => 2, [3, nil] => 3, [1, 3] => 1, [4, nil] => 4, [2, 5] => 5, [1, 4] => 1, [3, 5] => 5, [2, nil] => 2, [1, nil] => 1, [2, 3] => 3, [4, 5] => 5},
+        scores: {1 => 12, 2 => 6, 3 => 9, 4 => 3, 5 => 15} # Scores based on match results
+      )
+      
+      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch, pair_options: { push_byes_to: :bottom_half })
+
+      expect(matches).to eq [
+        [1, 5], [4, nil], [2, 3]
+      ]
+    end
   end
 
   describe "#available_round_robin_rounds" do

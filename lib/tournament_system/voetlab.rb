@@ -65,9 +65,15 @@ module TournamentSystem
       # By permuting teams, we get all possible round robin tournament configurations
       all_rr_tournaments = driver.seeded_teams.permutation.map { |teams| round_robin_tournament(driver, teams) }.to_set
 
+      # Collect past matches that we do not want to repeat
+      # Because there can be multiple full round robins, we only take the matches that have been repeated the most
+      matches = driver.matches.map(&:to_set)
+      match_counts = matches.tally
+      full_rr_count = matches.count / matches_per_round_robin(driver)
+      past_pairings = match_counts.select { |match, count| count == full_rr_count + 1 }.keys.to_set
+
       # Filter out round robin tournaments that do not include all past rounds
       # Those tournaments will not be able to complete fully
-      past_pairings = driver.matches.map(&:to_set).to_set
       valid_rr_tournaments = all_rr_tournaments.select do |rounds|
         played_rounds = rounds.select { |pairings| !(pairings & past_pairings).empty? }
         past_pairings == flatten_set(played_rounds) # If past pairings are the only pairings, we know rounds are identical
@@ -90,6 +96,13 @@ module TournamentSystem
 
     def pairer_from_options(options)
       options[:pairer] || TournamentSystem::Swiss::Dutch
+    end
+
+    def matches_per_round_robin(driver)
+      team_count = driver.seeded_teams.count
+      total_rounds = Algorithm::RoundRobin.total_rounds(team_count)
+      matches_per_round = (team_count.to_f / 2).ceil
+      total_rounds * matches_per_round
     end
 
     def flatten_set(sets)
