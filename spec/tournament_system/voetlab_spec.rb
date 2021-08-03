@@ -8,7 +8,7 @@ describe TournamentSystem::Voetlab do
 
   describe '#generate' do
     it 'completes the round robin' do
-      driver = TestDriver.new(
+      driver = SoccerTestDriver.new(
         teams: [1, 2, 3, 4, 5],
         matches: [[1, 2], [3, 4], [5, nil], [1, 3], [5, 2], [4, nil], [1, 5], [3, nil], [4, 2], [1, nil], [4, 5],
                   [2, 3],]
@@ -23,7 +23,7 @@ describe TournamentSystem::Voetlab do
     end
 
     it 'and generates matches' do
-      driver = TestDriver.new(teams: [1, 2, 3, 4, 5], scores: { 1 => 5, 2 => 4, 3 => 3, 4 => 2, 5 => 1 })
+      driver = SoccerTestDriver.new(teams: [1, 2, 3, 4, 5], scores: { 1 => 5, 2 => 4, 3 => 3, 4 => 2, 5 => 1 })
 
       matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
                                                  pair_options: { push_byes_to: :lowest_score })
@@ -35,11 +35,9 @@ describe TournamentSystem::Voetlab do
     end
 
     it 'generates matches round 2' do
-      driver = TestDriver.new(
+      driver = SoccerTestDriver.new(
         teams: [1, 2, 3, 4, 5],
-        matches: [[1, 2], [3, 4], [5, nil]],
-        winners: { [1, 2] => 1, [3, 4] => 3, [5, nil] => 5 },
-        scores: { 1 => 3, 2 => 0, 3 => 3, 4 => 0, 5 => 3 } # Scores based on match results
+        winners: { [1, 2] => 1, [3, 4] => 3, [5, nil] => 5 }
       )
 
       matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
@@ -53,11 +51,9 @@ describe TournamentSystem::Voetlab do
     end
 
     it 'generates matches round 3' do
-      driver = TestDriver.new(
+      driver = SoccerTestDriver.new(
         teams: [1, 2, 3, 4, 5],
-        matches: [[1, 2], [3, 4], [5, nil], [1, 5], [4, 2], [3, nil]],
-        winners: { [1, 2] => 1, [3, 4] => 3, [5, nil] => 5, [1, 5] => 5, [4, 2] => 2, [3, nil] => 3 },
-        scores: { 1 => 3, 2 => 3, 3 => 6, 4 => 0, 5 => 6 } # Scores based on match results
+        winners: { [1, 2] => 1, [3, 4] => 3, [5, nil] => 5, [1, 5] => 5, [4, 2] => 2, [3, nil] => 3 }
       )
 
       matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
@@ -69,12 +65,10 @@ describe TournamentSystem::Voetlab do
     end
 
     it 'generates matches round 4' do
-      driver = TestDriver.new(
+      driver = SoccerTestDriver.new(
         teams: [1, 2, 3, 4, 5],
-        matches: [[1, 2], [3, 4], [5, nil], [1, 5], [4, 2], [3, nil], [1, 3], [4, nil], [2, 5]],
         winners: { [1, 2] => 1, [3, 4] => 3, [5, nil] => 5, [1, 5] => 5, [4, 2] => 2, [3, nil] => 3, [1, 3] => 1,
-                   [4, nil] => 4, [2, 5] => 5, },
-        scores: { 1 => 6, 2 => 3, 3 => 6, 4 => 3, 5 => 9 } # Scores based on match results
+                   [4, nil] => 4, [2, 5] => 5, }
       )
 
       matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
@@ -86,13 +80,10 @@ describe TournamentSystem::Voetlab do
     end
 
     it 'generates matches round 5' do
-      driver = TestDriver.new(
+      driver = SoccerTestDriver.new(
         teams: [1, 2, 3, 4, 5],
-        matches: [[1, 2], [3, 4], [5, nil], [1, 5], [4, 2], [3, nil], [1, 3], [4, nil], [2, 5], [1, 4], [3, 5],
-                  [2, nil],],
         winners: { [1, 2] => 1, [3, 4] => 3, [5, nil] => 5, [1, 5] => 5, [4, 2] => 2, [3, nil] => 3, [1, 3] => 1,
-                   [4, nil] => 4, [2, 5] => 5, [1, 4] => 1, [3, 5] => 5, [2, nil] => 2, },
-        scores: { 1 => 9, 2 => 6, 3 => 6, 4 => 3, 5 => 12 } # Scores based on match results
+                   [4, nil] => 4, [2, 5] => 5, [1, 4] => 1, [3, 5] => 5, [2, nil] => 2, }
       )
 
       matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
@@ -104,18 +95,15 @@ describe TournamentSystem::Voetlab do
     end
 
     it 'calls generates matches round 6' do
-      driver = TestDriver.new(
+      driver = SoccerTestDriver.new(
         teams: [1, 2, 3, 4, 5],
-        matches: [[1, 2], [3, 4], [5, nil], [1, 5], [4, 2], [3, nil], [1, 3], [4, nil], [2, 5], [1, 4], [3, 5],
-                  [2, nil], [1, nil], [2, 3], [4, 5],],
         winners: {
           [1, 2] => 1, [3, 4] => 3, [5, nil] => 5,
           [1, 5] => 5, [4, 2] => 2, [3, nil] => 3,
           [1, 3] => 1, [4, nil] => 4, [2, 5] => 5,
           [1, 4] => 1, [3, 5] => 5, [2, nil] => 2,
           [1, nil] => 1, [2, 3] => 3, [4, 5] => 5,
-        },
-        scores: { 1 => 12, 2 => 6, 3 => 9, 4 => 3, 5 => 15 } # Scores based on match results
+        }
       )
 
       matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
