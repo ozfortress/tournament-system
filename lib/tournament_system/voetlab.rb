@@ -28,13 +28,13 @@ module TournamentSystem
       driver.create_matches(pairings)
     end
 
-    def minimum_rounds(driver)
+    def minimum_rounds(_driver)
       1
     end
-    
+
     # private
 
-    def build_state(driver, options = {})
+    def build_state(driver, options = {}) # rubocop:disable Metrics/AbcSize
       pairer = pairer_from_options(options)
       pairer_options = options[:pair_options] || {}
 
@@ -61,7 +61,7 @@ module TournamentSystem
       costs.sum
     end
 
-    def available_round_robin_rounds(driver)
+    def available_round_robin_rounds(driver) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       # By permuting teams, we get all possible round robin tournament configurations
       all_rr_tournaments = driver.seeded_teams.permutation.map { |teams| round_robin_tournament(driver, teams) }.to_set
 
@@ -70,13 +70,14 @@ module TournamentSystem
       matches = driver.matches.map(&:to_set)
       match_counts = matches.tally
       full_rr_count = matches.count / matches_per_round_robin(driver)
-      past_pairings = match_counts.select { |match, count| count == full_rr_count + 1 }.keys.to_set
+      past_pairings = match_counts.select { |_match, count| count == full_rr_count + 1 }.keys.to_set
 
       # Filter out round robin tournaments that do not include all past rounds
       # Those tournaments will not be able to complete fully
       valid_rr_tournaments = all_rr_tournaments.select do |rounds|
-        played_rounds = rounds.select { |pairings| !(pairings & past_pairings).empty? }
-        past_pairings == flatten_set(played_rounds) # If past pairings are the only pairings, we know rounds are identical
+        played_rounds = rounds.reject { |pairings| (pairings & past_pairings).empty? }
+        # If past pairings are the only pairings, we know rounds are identical
+        past_pairings == flatten_set(played_rounds)
       end
 
       # Collect all possibe rounds
@@ -84,12 +85,14 @@ module TournamentSystem
 
       # Combine the rounds of all valid round robin tournaments and filter out
       # rounds that have already been played
-      valid_rounds = all_rounds.select { |pairings| (pairings & past_pairings).empty? }
+      all_rounds.select { |pairings| (pairings & past_pairings).empty? }
     end
 
-    def round_robin_tournament(driver, teams)
+    def round_robin_tournament(_driver, teams)
       total_rounds = Algorithm::RoundRobin.total_rounds(teams.count)
-      all_rounds = (1..total_rounds).map { |round| Algorithm::RoundRobin.round_robin_pairing(Algorithm::Util.padd_teams_even(teams), round).map(&:to_set).to_set }
+      all_rounds = (1..total_rounds).map do |round|
+        Algorithm::RoundRobin.round_robin_pairing(Algorithm::Util.padd_teams_even(teams), round).map(&:to_set).to_set
+      end
 
       all_rounds.to_set
     end

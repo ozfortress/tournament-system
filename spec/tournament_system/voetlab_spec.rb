@@ -7,27 +7,30 @@ describe TournamentSystem::Voetlab do
   end
 
   describe '#generate' do
-    it "completes the round robin" do
+    it 'completes the round robin' do
       driver = TestDriver.new(
         teams: [1, 2, 3, 4, 5],
-        matches: [[1, 2], [3, 4], [5, nil], [1, 3], [5, 2], [4, nil], [1, 5], [3, nil], [4, 2], [1, nil], [4, 5], [2, 3]]
+        matches: [[1, 2], [3, 4], [5, nil], [1, 3], [5, 2], [4, nil], [1, 5], [3, nil], [4, 2], [1, nil], [4, 5],
+                  [2, 3],]
       )
-      
-      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch, pair_options: { push_byes_to: :bottom_half })
+
+      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
+                                                 pair_options: { push_byes_to: :bottom_half })
 
       expect(matches).to eq [
-        [1, 4], [5, 3], [2, nil]
+        [1, 4], [5, 3], [2, nil],
       ]
     end
 
     it 'and generates matches' do
-      driver = TestDriver.new(teams: [1, 2, 3, 4, 5], scores: {1 => 5, 2 => 4, 3 => 3, 4 => 2, 5 => 1})
+      driver = TestDriver.new(teams: [1, 2, 3, 4, 5], scores: { 1 => 5, 2 => 4, 3 => 3, 4 => 2, 5 => 1 })
 
-      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch, pair_options: { push_byes_to: :bottom_half })
+      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
+                                                 pair_options: { push_byes_to: :bottom_half })
 
       # Should match strongest teams together
       expect(matches).to eq [
-        [1, 2], [5, nil], [3, 4]
+        [1, 2], [5, nil], [3, 4],
       ]
     end
 
@@ -35,16 +38,17 @@ describe TournamentSystem::Voetlab do
       driver = TestDriver.new(
         teams: [1, 2, 3, 4, 5],
         matches: [[1, 2], [3, 4], [5, nil]],
-        winners: {[1, 2] => 1, [3, 4] => 3, [5, nil] => 5},
-        scores: {1 => 3, 2 => 0, 3 => 3, 4 => 0, 5 => 3} # Scores based on match results
+        winners: { [1, 2] => 1, [3, 4] => 3, [5, nil] => 5 },
+        scores: { 1 => 3, 2 => 0, 3 => 3, 4 => 0, 5 => 3 } # Scores based on match results
       )
 
-      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch, pair_options: { push_byes_to: :bottom_half })
+      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
+                                                 pair_options: { push_byes_to: :bottom_half })
 
       # Should pit winners against winners and losers against losers
       # with a bye for the team with the lowest score
       expect(matches).to eq [
-        [1, 5], [4, 2], [3, nil]
+        [1, 5], [4, 2], [3, nil],
       ]
     end
 
@@ -52,14 +56,15 @@ describe TournamentSystem::Voetlab do
       driver = TestDriver.new(
         teams: [1, 2, 3, 4, 5],
         matches: [[1, 2], [3, 4], [5, nil], [1, 5], [4, 2], [3, nil]],
-        winners: {[1, 2] => 1, [3, 4] => 3, [5, nil] => 5, [1, 5] => 5, [4, 2] => 2, [3, nil] => 3},
-        scores: {1 => 3, 2 => 3, 3 => 6, 4 => 0, 5 => 6} # Scores based on match results
+        winners: { [1, 2] => 1, [3, 4] => 3, [5, nil] => 5, [1, 5] => 5, [4, 2] => 2, [3, nil] => 3 },
+        scores: { 1 => 3, 2 => 3, 3 => 6, 4 => 0, 5 => 6 } # Scores based on match results
       )
 
-      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch, pair_options: { push_byes_to: :bottom_half })
+      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
+                                                 pair_options: { push_byes_to: :bottom_half })
 
       expect(matches).to eq [
-        [1, 3], [4, nil], [2, 5]
+        [1, 3], [4, nil], [2, 5],
       ]
     end
 
@@ -67,68 +72,82 @@ describe TournamentSystem::Voetlab do
       driver = TestDriver.new(
         teams: [1, 2, 3, 4, 5],
         matches: [[1, 2], [3, 4], [5, nil], [1, 5], [4, 2], [3, nil], [1, 3], [4, nil], [2, 5]],
-        winners: {[1, 2] => 1, [3, 4] => 3, [5, nil] => 5, [1, 5] => 5, [4, 2] => 2, [3, nil] => 3, [1, 3] => 1, [4, nil] => 4, [2, 5] => 5},
-        scores: {1 => 6, 2 => 3, 3 => 6, 4 => 3, 5 => 9} # Scores based on match results
+        winners: { [1, 2] => 1, [3, 4] => 3, [5, nil] => 5, [1, 5] => 5, [4, 2] => 2, [3, nil] => 3, [1, 3] => 1,
+                   [4, nil] => 4, [2, 5] => 5, },
+        scores: { 1 => 6, 2 => 3, 3 => 6, 4 => 3, 5 => 9 } # Scores based on match results
       )
-      
-      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch, pair_options: { push_byes_to: :bottom_half })
+
+      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
+                                                 pair_options: { push_byes_to: :bottom_half })
 
       expect(matches).to eq [
-        [1, 4], [3, 5], [2, nil]
+        [1, 4], [3, 5], [2, nil],
       ]
     end
 
     it 'generates matches round 5' do
       driver = TestDriver.new(
         teams: [1, 2, 3, 4, 5],
-        matches: [[1, 2], [3, 4], [5, nil], [1, 5], [4, 2], [3, nil], [1, 3], [4, nil], [2, 5], [1, 4], [3, 5], [2, nil]],
-        winners: {[1, 2] => 1, [3, 4] => 3, [5, nil] => 5, [1, 5] => 5, [4, 2] => 2, [3, nil] => 3, [1, 3] => 1, [4, nil] => 4, [2, 5] => 5, [1, 4] => 1, [3, 5] => 5, [2, nil] => 2},
-        scores: {1 => 9, 2 => 6, 3 => 6, 4 => 3, 5 => 12} # Scores based on match results
+        matches: [[1, 2], [3, 4], [5, nil], [1, 5], [4, 2], [3, nil], [1, 3], [4, nil], [2, 5], [1, 4], [3, 5],
+                  [2, nil],],
+        winners: { [1, 2] => 1, [3, 4] => 3, [5, nil] => 5, [1, 5] => 5, [4, 2] => 2, [3, nil] => 3, [1, 3] => 1,
+                   [4, nil] => 4, [2, 5] => 5, [1, 4] => 1, [3, 5] => 5, [2, nil] => 2, },
+        scores: { 1 => 9, 2 => 6, 3 => 6, 4 => 3, 5 => 12 } # Scores based on match results
       )
-      
-      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch, pair_options: { push_byes_to: :bottom_half })
+
+      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
+                                                 pair_options: { push_byes_to: :bottom_half })
 
       expect(matches).to eq [
-        [1, nil], [2, 3], [4, 5]
+        [1, nil], [2, 3], [4, 5],
       ]
     end
 
     it 'calls generates matches round 6' do
       driver = TestDriver.new(
         teams: [1, 2, 3, 4, 5],
-        matches: [[1, 2], [3, 4], [5, nil], [1, 5], [4, 2], [3, nil], [1, 3], [4, nil], [2, 5], [1, 4], [3, 5], [2, nil], [1, nil], [2, 3], [4, 5]],
-        winners: {[1, 2] => 1, [3, 4] => 3, [5, nil] => 5, [1, 5] => 5, [4, 2] => 2, [3, nil] => 3, [1, 3] => 1, [4, nil] => 4, [2, 5] => 5, [1, 4] => 1, [3, 5] => 5, [2, nil] => 2, [1, nil] => 1, [2, 3] => 3, [4, 5] => 5},
-        scores: {1 => 12, 2 => 6, 3 => 9, 4 => 3, 5 => 15} # Scores based on match results
+        matches: [[1, 2], [3, 4], [5, nil], [1, 5], [4, 2], [3, nil], [1, 3], [4, nil], [2, 5], [1, 4], [3, 5],
+                  [2, nil], [1, nil], [2, 3], [4, 5],],
+        winners: {
+          [1, 2] => 1, [3, 4] => 3, [5, nil] => 5,
+          [1, 5] => 5, [4, 2] => 2, [3, nil] => 3,
+          [1, 3] => 1, [4, nil] => 4, [2, 5] => 5,
+          [1, 4] => 1, [3, 5] => 5, [2, nil] => 2,
+          [1, nil] => 1, [2, 3] => 3, [4, 5] => 5,
+        },
+        scores: { 1 => 12, 2 => 6, 3 => 9, 4 => 3, 5 => 15 } # Scores based on match results
       )
-      
-      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch, pair_options: { push_byes_to: :bottom_half })
 
+      matches = described_class.generate(driver, pairer: TournamentSystem::Swiss::Dutch,
+                                                 pair_options: { push_byes_to: :bottom_half })
+
+      # Since this is a new lap of round robin, teams should again be matched solely based on score
       expect(matches).to eq [
-        [1, 5], [4, nil], [2, 3]
+        [1, 5], [4, nil], [2, 3],
       ]
     end
   end
 
-  describe "#available_round_robin_rounds" do
+  describe '#available_round_robin_rounds' do
     let(:teams) { [1, 2, 3, 4, 5] }
     let(:matches) { [] }
     let(:driver) { TestDriver.new(teams: teams, matches: matches) }
 
-    context "first round" do
-      it "returns all possible rounds" do
+    context 'first round' do
+      it 'returns all possible rounds' do
         rounds = described_class.available_round_robin_rounds(driver)
 
         # In the first rounds, all possible permutations of teams should still be possible
-        teams.permutation.each do |ordered_teams|
+        teams.permutation.each do |_ordered_teams|
           expect(rounds).to include Set[Set[teams[0], teams[1]], Set[teams[2], teams[3]], Set[teams[4], nil]]
         end
       end
     end
 
-    context "second round" do
+    context 'second round' do
       let(:matches) { [[1, 2], [3, 4], [5, nil]] }
 
-      it "returns only valid rounds" do
+      it 'returns only valid rounds' do
         rounds = described_class.available_round_robin_rounds(driver)
 
         # Should not include any of the played matches
@@ -156,10 +175,10 @@ describe TournamentSystem::Voetlab do
       end
     end
 
-    context "third round" do
+    context 'third round' do
       let(:matches) { [[1, 2], [3, 4], [5, nil], [1, 3], [5, 2], [4, nil]] }
 
-      it "returns only valid rounds" do
+      it 'returns only valid rounds' do
         rounds = described_class.available_round_robin_rounds(driver)
 
         # Should not include any of the played matches
@@ -180,11 +199,11 @@ describe TournamentSystem::Voetlab do
         ]
       end
     end
-    
-    context "fourth round" do
+
+    context 'fourth round' do
       let(:matches) { [[1, 2], [3, 4], [5, nil], [1, 3], [5, 2], [4, nil], [1, 4], [3, 5], [2, nil]] }
 
-      it "returns only valid rounds" do
+      it 'returns only valid rounds' do
         rounds = described_class.available_round_robin_rounds(driver)
 
         # Should not include any of the played matches
@@ -206,11 +225,13 @@ describe TournamentSystem::Voetlab do
         ]
       end
     end
-    
-    context "fifth round" do
-      let(:matches) { [[1, 2], [3, 4], [5, nil], [1, 3], [5, 2], [4, nil], [1, 4], [3, 5], [2, nil], [1, 5], [3, nil], [4, 2]] }
 
-      it "returns only valid rounds" do
+    context 'fifth round' do
+      let(:matches) do
+        [[1, 2], [3, 4], [5, nil], [1, 3], [5, 2], [4, nil], [1, 4], [3, 5], [2, nil], [1, 5], [3, nil], [4, 2]]
+      end
+
+      it 'returns only valid rounds' do
         rounds = described_class.available_round_robin_rounds(driver)
 
         # Should not include any of the played matches
