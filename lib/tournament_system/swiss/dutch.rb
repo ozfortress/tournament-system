@@ -40,11 +40,11 @@ module TournamentSystem
 
       def build_state(driver, options)
         OpenStruct.new(
-          driver:           driver,
-          teams:            get_teams(driver),
-          scores:           driver.scores_hash,
+          driver: driver,
+          teams: get_teams(driver),
+          scores: driver.scores_hash,
           allow_duplicates: options.fetch(:allow_duplicates, false),
-          push_byes_to:     options.fetch(:push_byes_to, :none)
+          push_byes_to: options.fetch(:push_byes_to, :none)
         )
       end
 

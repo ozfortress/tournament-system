@@ -166,14 +166,14 @@ describe TournamentSystem::DoubleElimination do
       end
 
       it 'works for 8 teams' do
-        # rubocop:disable Lint/DuplicatedKey
+        # rubocop:disable Lint/DuplicateHashKey
         winners = {
           [1, 8] => 1, [4, 5] => 5, [2, 7] => 2, [3, 6] => 3,
           [1, 5] => 1, [2, 3] => 3, [8, 4] => 4, [7, 6] => 6,
           [4, 5] => 5, [2, 6] => 2,
           [1, 3] => 1, [5, 2] => 2,
         }
-        # rubocop:enable Lint/DuplicatedKey
+        # rubocop:enable Lint/DuplicateHashKey
         matches = []
         matches_by_round = {}
 

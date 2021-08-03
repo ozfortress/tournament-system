@@ -156,6 +156,7 @@ module TournamentSystem
       winner = get_match_winner(match)
 
       return nil unless winner
+
       get_match_teams(match).reject { |team| team == winner }.first
     end
 
