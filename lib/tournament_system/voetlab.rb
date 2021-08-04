@@ -70,13 +70,13 @@ module TournamentSystem
       costs.sum
     end
 
-    def available_round_robin_rounds(driver) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    def available_round_robin_rounds(driver) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity
       # By permuting teams, we get all possible round robin tournament configurations
       all_rr_tournaments = driver.seeded_teams.permutation.map { |teams| round_robin_tournament(driver, teams) }.to_set
 
       # Collect past matches that we do not want to repeat
       # Because there can be multiple full round robins, we only take the matches that have been repeated the most
-      matches = driver.matches.map(&:to_set)
+      matches = driver.matches.map { |m| driver.get_match_teams(m) }.map(&:to_set)
       match_counts = matches.tally
       full_rr_count = matches.count / matches_per_round_robin(driver)
       past_pairings = match_counts.select { |_match, count| count == full_rr_count + 1 }.keys.to_set
