@@ -10,6 +10,10 @@ class Match < Array
   def away_team
     last
   end
+
+  def to_set
+    raise 'to_set not supported'
+  end
 end
 
 class TestDriver < TournamentSystem::Driver
