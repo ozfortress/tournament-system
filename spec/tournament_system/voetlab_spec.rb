@@ -46,7 +46,7 @@ describe TournamentSystem::Voetlab do
       # Should pit winners against winners and losers against losers
       # with a bye for the team with the lowest score
       expect(matches).to eq [
-        [1, 4], [3, 5], [2, nil],
+        [1, 3], [4, 5], [2, nil],
       ]
     end
 

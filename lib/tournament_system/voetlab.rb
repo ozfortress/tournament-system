@@ -15,12 +15,21 @@ module TournamentSystem
     # @option options [Hash] pair_options options for the chosen pairing system,
     #                                     see {Dutch} for more details
     # @return [nil]
-    def generate(driver, options = {})
+    def generate(driver, options = {}) # rubocop:disable Metrics/MethodLength
       available_rounds = available_round_robin_rounds(driver)
 
       state = build_state(driver, options)
-      ordered_rounds = available_rounds.sort_by do |pairings|
-        rate_round(pairings, state, options)
+
+      # Order the rounds by cost
+      ordered_rounds = available_rounds.sort do |pairings1, pairings2|
+        rating1 = rate_round(pairings1, state, options)
+        rating2 = rate_round(pairings2, state, options)
+        if rating1 == rating2
+          # Equal ratings - make sure there is a deterministic decision
+          pairings1.to_s <=> pairings2.to_s
+        else
+          rating1 <=> rating2
+        end
       end
 
       pairings = ordered_rounds.first.map(&:to_a)
