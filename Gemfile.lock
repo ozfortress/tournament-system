@@ -8,6 +8,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    byebug (11.1.3)
     diff-lcs (1.4.4)
     docile (1.4.0)
     generator (0.0.1)
@@ -73,6 +74,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
+  byebug
   rake
   reek
   rspec

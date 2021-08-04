@@ -15,10 +15,10 @@ end
 class TestDriver < TournamentSystem::Driver
   def initialize(options = {})
     @teams = options[:teams] || []
-    @ranked_teams = options[:ranked_teams] || @teams
     @matches = options[:matches] || []
     @winners = options[:winners] || {}
     @scores = options[:scores] || Hash.new(0)
+    @ranked_teams = options[:ranked_teams] || @teams
     @team_matches = options[:team_matches] || build_team_matches_from_matches
     @created_matches = []
     super()

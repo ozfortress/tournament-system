@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 gemspec
 
+# For debugging
+gem 'byebug'
+
 # For build scripts
 gem 'rake'
 

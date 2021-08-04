@@ -1,4 +1,5 @@
 require 'simplecov'
+require 'byebug'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new [
   SimpleCov::Formatter::HTMLFormatter,
@@ -8,6 +9,7 @@ SimpleCov.start
 
 require 'tournament_system'
 require 'support/test_driver'
+require 'support/soccer_test_driver'
 
 RSpec.configure do |config|
   # Nicer specs
