@@ -98,7 +98,7 @@ module TournamentSystem
     end
 
     def pairer_from_options(options)
-      options[:pairer] || TournamentSystem::Swiss::Dutch
+      options[:pairer] || TournamentSystem::Swiss::Voetlab
     end
 
     def matches_per_round_robin(driver)

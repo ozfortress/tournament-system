@@ -1,6 +1,7 @@
 require 'tournament_system/algorithm/swiss'
 require 'tournament_system/swiss/dutch'
 require 'tournament_system/swiss/accelerated_dutch'
+require 'tournament_system/swiss/voetlab'
 
 module TournamentSystem
   # Robust implementation of the swiss tournament system
