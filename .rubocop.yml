@@ -4,7 +4,7 @@ AllCops:
   NewCops: disable
   SuggestExtensions: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
 # 'old' style
