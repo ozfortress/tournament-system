@@ -18,7 +18,7 @@ describe TournamentSystem::Voetlab do
                                                  pair_options: { push_byes_to: :lowest_score })
 
       expect(matches).to eq [
-        [1, 4], [5, 3], [2, nil],
+        [3, 5], [1, 4], [2, nil],
       ]
     end
 
@@ -30,7 +30,7 @@ describe TournamentSystem::Voetlab do
 
       # Should match strongest teams together
       expect(matches).to eq [
-        [1, 2], [5, nil], [3, 4],
+        [2, 1], [5, nil], [3, 4],
       ]
     end
 
@@ -46,7 +46,7 @@ describe TournamentSystem::Voetlab do
       # Should pit winners against winners and losers against losers
       # with a bye for the team with the lowest score
       expect(matches).to eq [
-        [1, 3], [4, 5], [2, nil],
+        [2, nil], [3, 1], [4, 5],
       ]
     end
 
@@ -60,7 +60,7 @@ describe TournamentSystem::Voetlab do
                                                  pair_options: { push_byes_to: :lowest_score })
 
       expect(matches).to eq [
-        [1, 3], [4, nil], [2, 5],
+        [3, 1], [2, 5], [4, nil],
       ]
     end
 
@@ -75,7 +75,7 @@ describe TournamentSystem::Voetlab do
                                                  pair_options: { push_byes_to: :lowest_score })
 
       expect(matches).to eq [
-        [1, 4], [3, 5], [2, nil],
+        [3, 5], [1, 4], [2, nil],
       ]
     end
 
@@ -90,7 +90,7 @@ describe TournamentSystem::Voetlab do
                                                  pair_options: { push_byes_to: :lowest_score })
 
       expect(matches).to eq [
-        [1, nil], [2, 3], [4, 5],
+        [3, 2], [1, nil], [4, 5],
       ]
     end
 
@@ -111,7 +111,7 @@ describe TournamentSystem::Voetlab do
 
       # Since this is a new lap of round robin, teams should again be matched solely based on score
       expect(matches).to eq [
-        [1, 5], [4, nil], [2, 3],
+        [2, 3], [4, nil], [5, 1],
       ]
     end
   end
