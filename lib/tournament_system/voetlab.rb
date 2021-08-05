@@ -70,22 +70,14 @@ module TournamentSystem
       costs.sum
     end
 
-    def available_round_robin_rounds(driver) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-      # By permuting teams, we get all possible round robin tournament configurations
-      teams = driver.seeded_teams
-      all_rotations = (1..teams.size).map { |r| teams.rotate(r) }
-      all_rr_tournaments = all_rotations.map { |rotated_teams| round_robin_tournament(driver, rotated_teams) }.to_set
-
+    def available_round_robin_rounds(driver)
       # Collect past matches that we do not want to repeat
       # Because there can be multiple full round robins, we only take the matches that have been repeated the most
-      matches = driver.matches.map { |m| driver.get_match_teams(m) }.map(&:to_set)
-      match_counts = matches.tally
-      full_rr_count = matches.count / matches_per_round_robin(driver)
-      past_pairings = match_counts.select { |_match, count| count == full_rr_count + 1 }.keys.to_set
+      past_pairings = collect_past_pairings(driver)
 
       # Filter out round robin tournaments that do not include all past rounds
       # Those tournaments will not be able to complete fully
-      valid_rr_tournaments = all_rr_tournaments.select do |rounds|
+      valid_rr_tournaments = all_round_robin_tournaments(driver).select do |rounds|
         played_rounds = rounds.reject { |pairings| (pairings & past_pairings).empty? }
         # If past pairings are the only pairings, we know rounds are identical
         past_pairings == flatten_set(played_rounds)
@@ -99,6 +91,13 @@ module TournamentSystem
       all_rounds.select { |pairings| (pairings & past_pairings).empty? }
     end
 
+    def all_round_robin_tournaments(driver)
+      # By rotating teams, we get all possible round robin tournament configurations
+      teams = driver.seeded_teams
+      all_rotations = (1..teams.size).map { |r| teams.rotate(r) }
+      all_rotations.map { |rotated_teams| round_robin_tournament(driver, rotated_teams) }.to_set
+    end
+
     def round_robin_tournament(_driver, teams)
       total_rounds = Algorithm::RoundRobin.total_rounds(teams.count)
       all_rounds = (1..total_rounds).map do |round|
@@ -106,6 +105,13 @@ module TournamentSystem
       end
 
       all_rounds.to_set
+    end
+
+    def collect_past_pairings(driver)
+      matches = driver.matches.map { |m| driver.get_match_teams(m) }.map(&:to_set)
+      match_counts = matches.tally
+      full_rr_count = matches.count / matches_per_round_robin(driver)
+      match_counts.select { |_match, count| count == full_rr_count + 1 }.keys.to_set
     end
 
     def pairer_from_options(options)
