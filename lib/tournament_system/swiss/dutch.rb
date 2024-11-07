@@ -91,7 +91,7 @@ module TournamentSystem
         cost = 0
 
         # Reduce score distance between teams
-        cost += (state.scores[home_team] || 0 - state.scores[away_team] || 0).abs
+        cost += ((state.scores[home_team] || 0) - (state.scores[away_team] || 0)).abs
 
         # The cost of a duplicate is the score range + 1
         cost += (state.score_range + 1) * state.matches[match_set] unless state.allow_duplicates
