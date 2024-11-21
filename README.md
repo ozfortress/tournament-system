@@ -1,7 +1,6 @@
 # Tournament System
 
 [![Build Status](https://travis-ci.org/ozfortress/tournament-system.svg?branch=master)](https://travis-ci.org/ozfortress/tournament-system)
-[![Coverage Status](https://coveralls.io/repos/github/ozfortress/tournament-system/badge.svg?branch=master)](https://coveralls.io/github/ozfortress/tournament-system?branch=master)
 [![Gem Version](https://badge.fury.io/rb/tournament-system.svg)](https://badge.fury.io/rb/tournament-system)
 [![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](http://www.rubydoc.info/github/ozfortress/tournament-system/master)
 

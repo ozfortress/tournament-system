@@ -1,6 +1,6 @@
 language: ruby
 cache: bundler
-rvm: 2.5.0
+rvm: 2.5.9
 # rainbow gem install script is broken
 before_install:
   - gem update --system

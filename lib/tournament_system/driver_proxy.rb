@@ -9,6 +9,7 @@ module TournamentSystem
     # @param target [Driver] the driver to proxy
     def initialize(target)
       @target = target
+      super()
     end
 
     def matches

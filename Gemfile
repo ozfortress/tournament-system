@@ -12,9 +12,5 @@ gem 'rspec'
 gem 'simplecov'
 
 # Linting
-gem 'rubocop', '~> 0.56.0'
+gem 'rubocop'
 gem 'reek'
-
-group :test do
-  gem 'coveralls', require: false
-end

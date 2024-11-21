@@ -78,10 +78,10 @@ describe TournamentSystem::Algorithm::Matching do
     it 'handles nil values' do
       teams = [1, 2, 3, nil].freeze
       weights = {
-        Set[1, 2]   => 0,
-        Set[1, 3]   => 1,
+        Set[1, 2] => 0,
+        Set[1, 3] => 1,
         Set[1, nil] => 2,
-        Set[2, 3]   => 1,
+        Set[2, 3] => 1,
         Set[2, nil] => 2,
         Set[3, nil] => -1,
       }
